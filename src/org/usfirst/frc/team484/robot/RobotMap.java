@@ -16,29 +16,29 @@ public class RobotMap {
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
-	public static int frontLeftEncA;
-	public static int frontRightEncA;
-	public static int rearleftEncA;
-	public static int rearRightEncA;
-	public static int frontLeftEncB;
-	public static int frontRightEncB;
-	public static int rearleftEncB;
-	public static int rearRightEncB;
+	public static int frontLeftEncA = 0;
+	public static int frontRightEncA = 4;
+	public static int rearleftEncA = 2 ;
+	public static int rearRightEncA = 6;
+	public static int frontLeftEncB = 1;
+	public static int frontRightEncB = 5;
+	public static int rearleftEncB = 3;
+	public static int rearRightEncB = 8;
 	
-	public static int frontLeftTransMotor;
-	public static int frontRightTransMotor;
-	public static int rearleftTransMotor;
-	public static int rearRightTransMotor;
+	public static int frontLeftTransMotor = 0;
+	public static int frontRightTransMotor = 2;
+	public static int rearleftTransMotor = 1;
+	public static int rearRightTransMotor = 3;
 	
-	public static int frontLeftRotationalMotor;
-	public static int frontRightRotationalMotor;
-	public static int rearleftRotationalMotor;
-	public static int rearRightRotationalMotor;
+	public static int frontLeftRotationalMotor = 4;
+	public static int frontRightRotationalMotor = 6;
+	public static int rearleftRotationalMotor = 5;
+	public static int rearRightRotationalMotor = 7;
 	
-	public static int driveStick;
-	public static int operatorStick;
+	public static int driveStick = 0;
+	public static int operatorStick = 1;
 	
-	public static int infraredSensor;
+	public static int infraredSensor = 0;
 
 
 }

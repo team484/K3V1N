@@ -43,8 +43,8 @@ public class Robot extends IterativeRobot {
 	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
 	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
 	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, frontLeftEnc, frontLeftEnc, frontLeftEnc, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, false);
-	public static AnalogInput infraredSensor;
-	public static DriveTrain driveTrain;
+	public static AnalogInput infraredSensor = new AnalogInput(RobotMap.infraredSensor);
+	public static DriveTrain driveTrain = new DriveTrain();
 	public static OI oi;
 
 	Command autonomousCommand;
