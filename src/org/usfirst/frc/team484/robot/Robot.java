@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	
+	 
 	public static OI oi;
 	public static Talon frontLeftTransMotor = new Talon(RobotMap.frontLeftTransMotor);
 	public static Talon frontRightTransMotor = new Talon(RobotMap.frontRightTransMotor);

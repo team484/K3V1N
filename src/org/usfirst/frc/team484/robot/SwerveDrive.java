@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SpeedController;
 
-/**
+/** 
  * Class designed to allow for manipulating swerve drive on a robot.
  * Requires 4 relative encoders and 8 speed controllers configured on
  * 4 axes of symmetry and calculates the optimal vector for each swerve 
