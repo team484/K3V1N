@@ -25,6 +25,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
+	
+	public static OI oi;
 	public static Talon frontLeftTransMotor = new Talon(RobotMap.frontLeftTransMotor);
 	public static Talon frontRightTransMotor = new Talon(RobotMap.frontRightTransMotor);
 	public static Talon rearLeftTransMotor = new Talon(RobotMap.rearleftTransMotor);
@@ -42,11 +44,10 @@ public class Robot extends IterativeRobot {
 	
 	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
 	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
-	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, frontLeftEnc, frontLeftEnc, frontLeftEnc, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, frontLeftRotationalMotor, false);
+	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, rearLeftEnc, frontRightEnc, rearRightEnc, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, false);
 	public static AnalogInput infraredSensor = new AnalogInput(RobotMap.infraredSensor);
 	public static DriveTrain driveTrain = new DriveTrain();
-	public static OI oi;
-
+	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -57,6 +58,19 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+		frontLeftEnc.reset();
+		rearLeftEnc.reset();
+		frontRightEnc.reset();
+		rearRightEnc.reset();
+		
+		
+		frontLeftEnc.setDistancePerPulse(0.86694762);
+		rearLeftEnc.setDistancePerPulse(0.86694762);
+		frontRightEnc.setDistancePerPulse(0.86694762);
+		rearRightEnc.setDistancePerPulse(0.86694762);
+		swerve.setWheelbaseDimensions(15.0, 30.0);
+		
+		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
@@ -118,8 +132,9 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
+		if (autonomousCommand != null) autonomousCommand.cancel();
+		swerve.enablePID();
+		
 	}
 
 	/**

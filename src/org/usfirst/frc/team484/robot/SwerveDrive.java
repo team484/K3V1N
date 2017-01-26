@@ -1,5 +1,6 @@
 package org.usfirst.frc.team484.robot;
 
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -116,7 +117,7 @@ public class SwerveDrive {
 		encFR = iEncFR;
 		encRR = iEncRR;
 
-		setWheelbaseDimensions(1.0, 1.0);
+		setWheelbaseDimensions(27.0, 17.5);
 		
 		if (invertWheelRotation) {
 			pidFL = new PIDController(kP, kI, kD, new PIDSource() {
@@ -133,7 +134,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
+					return PIDSourceType.kDisplacement;
 				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
@@ -154,8 +155,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
-				}
+					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
 					rotRL.set(-d);
@@ -175,8 +175,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
-				}
+					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
 					rotFR.set(-d);
@@ -196,8 +195,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
-				}
+					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
 					rotRR.set(-d);
@@ -218,8 +216,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
-				}
+					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
 					rotFL.set(d);
@@ -239,8 +236,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
-				}
+					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
 					rotRL.set(d);
@@ -260,8 +256,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
-				}
+					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
 					rotFR.set(d);
@@ -281,8 +276,7 @@ public class SwerveDrive {
 				@Override
 				public PIDSourceType getPIDSourceType() {
 					// TODO Auto-generated method stub
-					return null;
-				}
+					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
 					rotRR.set(d);
@@ -308,7 +302,7 @@ public class SwerveDrive {
 		pidRL.setSetpoint(0);
 		pidFR.setSetpoint(0);
 		pidRR.setSetpoint(0);
-
+		
 		pidFL.enable();
 		pidRL.enable();
 		pidFR.enable();
@@ -560,6 +554,9 @@ public class SwerveDrive {
 	 * @param angleOffset degrees to offset the stick angle by
 	 */
 	public void drive(double stickAngle, double stickMag, double rot, double angleOffset) {
+		if (Double.isNaN(rot)) {
+			rot = 0.0;
+		}
 		stickAngle = -stickAngle; //start for converting stick angle value to polar coordinate
 		stickAngle+= 90;
 		if (stickAngle > 180) {
@@ -672,5 +669,17 @@ public class SwerveDrive {
 		rotRL.set(0);
 		rotFR.set(0);
 		rotRR.set(0);
+	}
+	public void setupWeels() {
+		pidFL.setSetpoint(0.0);
+		pidRL.setSetpoint(0.0);
+		pidFR.setSetpoint(0.0);
+		pidRR.setSetpoint(0.0);
+	}
+	public void enablePID() {
+		pidFL.enable();
+		pidRL.enable();
+		pidFR.enable();
+		pidRR.enable();
 	}
 }

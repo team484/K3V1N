@@ -23,7 +23,7 @@ public class RobotMap {
 	public static int frontLeftEncB = 1;
 	public static int frontRightEncB = 5;
 	public static int rearleftEncB = 3;
-	public static int rearRightEncB = 8;
+	public static int rearRightEncB = 7;
 	
 	public static int frontLeftTransMotor = 0;
 	public static int frontRightTransMotor = 2;
@@ -38,7 +38,7 @@ public class RobotMap {
 	public static int driveStick = 0;
 	public static int operatorStick = 1;
 	
-	public static int infraredSensor = 0;
+	public static int infraredSensor = 2;
 
 
 }
