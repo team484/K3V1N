@@ -18,7 +18,7 @@ public class RobotMap {
 	// public static int rangefinderModule = 1;
 	public static int frontLeftEncA = 0;
 	public static int frontRightEncA = 4;
-	public static int rearleftEncA = 2 ;
+	public static int rearleftEncA = 2 ; 
 	public static int rearRightEncA = 6;
 	public static int frontLeftEncB = 1;
 	public static int frontRightEncB = 5;

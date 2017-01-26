@@ -6,5 +6,5 @@ public class RobotSettings {
 	public static double kI = 0.0;
 	public static double kD = 0.0;
 	
-}
+} 
 
