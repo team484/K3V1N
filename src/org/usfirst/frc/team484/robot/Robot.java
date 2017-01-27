@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team484.robot;
 
+import org.usfirst.frc.team484.robot.commands.resetWheels;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -44,9 +45,10 @@ public class Robot extends IterativeRobot {
 	
 	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
 	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
-	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, rearLeftEnc, frontRightEnc, rearRightEnc, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, false);
+	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, rearLeftEnc, frontRightEnc, rearRightEnc, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, frontLeftTransMotor, rearLeftTransMotor, frontRightTransMotor, rearRightTransMotor, false);
 	public static AnalogInput infraredSensor = new AnalogInput(RobotMap.infraredSensor);
 	public static DriveTrain driveTrain = new DriveTrain();
+	public static resetWheels reset = new resetWheels();
 	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -68,7 +70,7 @@ public class Robot extends IterativeRobot {
 		rearLeftEnc.setDistancePerPulse(0.86694762);
 		frontRightEnc.setDistancePerPulse(0.86694762);
 		rearRightEnc.setDistancePerPulse(0.86694762);
-		swerve.setWheelbaseDimensions(15.0, 30.0);
+		swerve.setWheelbaseDimensions(27.0, 17.5);
 		
 		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
@@ -133,7 +135,7 @@ public class Robot extends IterativeRobot {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		if (autonomousCommand != null) autonomousCommand.cancel();
-		swerve.enablePID();
+		//swerve.enablePID();
 		
 	}
 
@@ -143,6 +145,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		System.out.println(infraredSensor.getAverageVoltage());
 	}
 
 	/**

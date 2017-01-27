@@ -19,7 +19,7 @@ public class DriveTrain extends Subsystem {
     	setDefaultCommand(new DriveWithJoystick());
     }
     public void driveWithJoystick() {
-    	Robot.swerve.drive(30.0, Robot.driveStick.getMagnitude(), Robot.driveStick.getTwist());
+    	Robot.swerve.drive(Robot.driveStick.getDirectionDegrees(), Robot.driveStick.getMagnitude(), -Math.pow(Robot.driveStick.getTwist(), 3) / Math.abs(Robot.driveStick.getTwist()));
     	
     }
     public void doNothing(){
@@ -27,6 +27,9 @@ public class DriveTrain extends Subsystem {
     }
     public void driveWithValues(double deg, double mag, double rot){
     		Robot.swerve.drive(deg, mag, rot);
+    }
+    public void resetMotors(){
+    	Robot.swerve.setupWeels();
     }
     
     
