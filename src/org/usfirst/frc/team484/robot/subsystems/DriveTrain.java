@@ -23,7 +23,7 @@ public class DriveTrain extends Subsystem {
     	
     }
     public void doNothing(){
-    	 
+    	 Robot.swerve.drive(0,0,0);
     }
     public void driveWithValues(double deg, double mag, double rot){
     		Robot.swerve.drive(deg, mag, rot);

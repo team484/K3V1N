@@ -35,6 +35,12 @@ public class RobotMap {
 	public static int rearleftRotationalMotor = 5;
 	public static int rearRightRotationalMotor = 7;
 	
+	public static int shooterMotor = 8;
+	public static int shooterEncA = 8;
+	public static int shooterEncB = 9;
+	
+	public static int pickupMotor = 10;
+	
 	public static int driveStick = 0;
 	public static int operatorStick = 1;
 	

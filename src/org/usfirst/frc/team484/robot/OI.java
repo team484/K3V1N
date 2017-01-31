@@ -1,5 +1,7 @@
 package org.usfirst.frc.team484.robot;
 
+import org.usfirst.frc.team484.robot.commands.ResetWheels;
+
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -39,7 +41,7 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 	Button resetWheels = new JoystickButton(Robot.driveStick, 2);
 	public OI(){
-		resetWheels.whileHeld(Robot.reset);
+		resetWheels.whileHeld(new ResetWheels());
 	}
 	
 }

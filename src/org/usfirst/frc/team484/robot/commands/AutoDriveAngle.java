@@ -7,11 +7,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class resetWheels extends Command {
+public class AutoDriveAngle extends Command {
 
-    public resetWheels() {
+	double deg;
+	double mag;
+    public AutoDriveAngle(double deg, double mag) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	this.deg = deg;
+    	this.mag = mag;
     	requires(Robot.driveTrain);
     }
 
@@ -21,7 +25,9 @@ public class resetWheels extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.resetMotors();
+    	Robot.driveTrain.driveWithValues(deg, mag, 0);
+    	
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -1,7 +1,9 @@
 
 package org.usfirst.frc.team484.robot;
 
-import org.usfirst.frc.team484.robot.commands.resetWheels;
+import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
+import org.usfirst.frc.team484.robot.subsystems.BallPickup;
+import org.usfirst.frc.team484.robot.subsystems.BallShooter;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -38,17 +40,22 @@ public class Robot extends IterativeRobot {
 	public static Talon rearLeftRotationalMotor = new Talon(RobotMap.rearleftRotationalMotor);
 	public static Talon rearRightRotationalMotor = new Talon(RobotMap.rearRightRotationalMotor);
 	
+	public static Talon shooterMotor = new Talon(RobotMap.shooterMotor);
+	public static Talon pickupMotor = new Talon(RobotMap.pickupMotor);
+	
 	public static Encoder frontLeftEnc = new Encoder(RobotMap.frontLeftEncA, RobotMap.frontLeftEncB);
 	public static Encoder frontRightEnc = new Encoder(RobotMap.frontRightEncA, RobotMap.frontRightEncB);
 	public static Encoder rearLeftEnc = new Encoder(RobotMap.rearleftEncA, RobotMap.rearleftEncB);
 	public static Encoder rearRightEnc = new Encoder(RobotMap.rearRightEncA, RobotMap.rearRightEncB);
+	public static Encoder shooterEnc = new Encoder(RobotMap.shooterEncA, RobotMap.shooterEncB);
 	
 	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
 	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
 	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, rearLeftEnc, frontRightEnc, rearRightEnc, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, frontLeftTransMotor, rearLeftTransMotor, frontRightTransMotor, rearRightTransMotor, false);
 	public static AnalogInput infraredSensor = new AnalogInput(RobotMap.infraredSensor);
 	public static DriveTrain driveTrain = new DriveTrain();
-	public static resetWheels reset = new resetWheels();
+	public static BallShooter ballShooter = new BallShooter();
+	public static BallPickup ballPickup = new BallPickup();
 	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -70,6 +77,7 @@ public class Robot extends IterativeRobot {
 		rearLeftEnc.setDistancePerPulse(0.86694762);
 		frontRightEnc.setDistancePerPulse(0.86694762);
 		rearRightEnc.setDistancePerPulse(0.86694762);
+		shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
 		swerve.setWheelbaseDimensions(27.0, 17.5);
 		
 		
@@ -106,8 +114,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
-
+		autonomousCommand = new AutoGearPlace();
+		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -145,7 +153,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		System.out.println(infraredSensor.getAverageVoltage());
 	}
 
 	/**
