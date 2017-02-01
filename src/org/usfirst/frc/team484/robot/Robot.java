@@ -4,6 +4,7 @@ package org.usfirst.frc.team484.robot;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
 import org.usfirst.frc.team484.robot.subsystems.BallShooter;
+import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,7 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	
-	 
+	
 	public static OI oi;
 	public static Talon frontLeftTransMotor = new Talon(RobotMap.frontLeftTransMotor);
 	public static Talon frontRightTransMotor = new Talon(RobotMap.frontRightTransMotor);
@@ -42,12 +44,15 @@ public class Robot extends IterativeRobot {
 	
 	public static Talon shooterMotor = new Talon(RobotMap.shooterMotor);
 	public static Talon pickupMotor = new Talon(RobotMap.pickupMotor);
+	public static Talon climberMotor = new Talon(RobotMap.climberMotor);
 	
 	public static Encoder frontLeftEnc = new Encoder(RobotMap.frontLeftEncA, RobotMap.frontLeftEncB);
 	public static Encoder frontRightEnc = new Encoder(RobotMap.frontRightEncA, RobotMap.frontRightEncB);
 	public static Encoder rearLeftEnc = new Encoder(RobotMap.rearleftEncA, RobotMap.rearleftEncB);
 	public static Encoder rearRightEnc = new Encoder(RobotMap.rearRightEncA, RobotMap.rearRightEncB);
 	public static Encoder shooterEnc = new Encoder(RobotMap.shooterEncA, RobotMap.shooterEncB);
+	
+	public static NetworkTable visionTable = NetworkTable.getTable("grip");
 	
 	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
 	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
@@ -56,6 +61,7 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain driveTrain = new DriveTrain();
 	public static BallShooter ballShooter = new BallShooter();
 	public static BallPickup ballPickup = new BallPickup();
+	public static Climber climber = new Climber();
 	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -72,14 +78,13 @@ public class Robot extends IterativeRobot {
 		frontRightEnc.reset();
 		rearRightEnc.reset();
 		
-		
-		frontLeftEnc.setDistancePerPulse(0.86694762);
-		rearLeftEnc.setDistancePerPulse(0.86694762);
-		frontRightEnc.setDistancePerPulse(0.86694762);
-		rearRightEnc.setDistancePerPulse(0.86694762);
+		frontLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		rearLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		frontRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		rearRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
 		shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
-		swerve.setWheelbaseDimensions(27.0, 17.5);
 		
+		swerve.setWheelbaseDimensions(RobotSettings.wheelBaseX, RobotSettings.wheelBaseY);
 		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
