@@ -4,9 +4,9 @@ package org.usfirst.frc.team484.robot;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
 import org.usfirst.frc.team484.robot.subsystems.BallShooter;
-import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -44,7 +44,6 @@ public class Robot extends IterativeRobot {
 	
 	public static Talon shooterMotor = new Talon(RobotMap.shooterMotor);
 	public static Talon pickupMotor = new Talon(RobotMap.pickupMotor);
-	public static Talon climberMotor = new Talon(RobotMap.climberMotor);
 	
 	public static Encoder frontLeftEnc = new Encoder(RobotMap.frontLeftEncA, RobotMap.frontLeftEncB);
 	public static Encoder frontRightEnc = new Encoder(RobotMap.frontRightEncA, RobotMap.frontRightEncB);
@@ -52,26 +51,28 @@ public class Robot extends IterativeRobot {
 	public static Encoder rearRightEnc = new Encoder(RobotMap.rearRightEncA, RobotMap.rearRightEncB);
 	public static Encoder shooterEnc = new Encoder(RobotMap.shooterEncA, RobotMap.shooterEncB);
 	
-	public static NetworkTable visionTable = NetworkTable.getTable("grip");
-	
+	//public static NetworkTable visionTable = NetworkTable.getTable("grip");
+	public static AnalogInput infraredSensor = new AnalogInput(RobotMap.infraredSensor);
+	public static AnalogGyro topGyro = new AnalogGyro(RobotMap.topGyro);
+	public static AnalogGyro bottomGyro = new AnalogGyro(RobotMap.bottomGyro);
+
 	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
 	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
 	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, rearLeftEnc, frontRightEnc, rearRightEnc, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, frontLeftTransMotor, rearLeftTransMotor, frontRightTransMotor, rearRightTransMotor, false);
-	public static AnalogInput infraredSensor = new AnalogInput(RobotMap.infraredSensor);
 	public static DriveTrain driveTrain = new DriveTrain();
 	public static BallShooter ballShooter = new BallShooter();
 	public static BallPickup ballPickup = new BallPickup();
-	public static Climber climber = new Climber();
 	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
-
+ 
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		
 		oi = new OI();
 		frontLeftEnc.reset();
 		rearLeftEnc.reset();
@@ -85,10 +86,16 @@ public class Robot extends IterativeRobot {
 		shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
 		
 		swerve.setWheelbaseDimensions(RobotSettings.wheelBaseX, RobotSettings.wheelBaseY);
+
+		topGyro.initGyro();
+		topGyro.calibrate();
+		bottomGyro.initGyro();
+		bottomGyro.calibrate();
 		
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		
 	}
 
 	/**

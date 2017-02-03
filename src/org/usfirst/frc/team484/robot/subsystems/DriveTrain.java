@@ -1,6 +1,7 @@
 package org.usfirst.frc.team484.robot.subsystems;
 
 import org.usfirst.frc.team484.robot.Robot;
+import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.DriveWithJoystick;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -14,22 +15,36 @@ public class DriveTrain extends Subsystem {
     // here. Call these from Commands.
 	
 	//TODO: Add method to rotate wheels into a defensive position to avoid being pushed by enemy robots.
+	
+	private double prevTwist = 0.0;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new DriveWithJoystick());
     }
+    
     public void driveWithJoystick() {
-    	Robot.swerve.drive(Robot.driveStick.getDirectionDegrees(), Robot.driveStick.getMagnitude(), -Math.pow(Robot.driveStick.getTwist(), 3) / Math.abs(Robot.driveStick.getTwist()));
+    	double rotation = Robot.driveStick.getDirectionDegrees();
+    	double magnitude = Robot.driveStick.getMagnitude();
+    	double twist = -Math.pow(Robot.driveStick.getTwist(), 3) / Math.abs(Robot.driveStick.getTwist());
+    	
+    	// TODO: what is the domain of magnitude? Is it always > 0?
+    	double fixedMag = Math.abs(magnitude) > RobotSettings.EPSILON ? magnitude : 0.0;
+    	double fixedTwist = Math.abs(twist) > RobotSettings.EPSILON ? prevTwist = twist : prevTwist;
+    	
+    	Robot.swerve.drive(rotation, fixedMag, fixedTwist);
     	
     }
+    
     public void doNothing(){
-    	 Robot.swerve.drive(0,0,0);
+    	Robot.swerve.drive(0,0,0);
     }
+    
     public void driveWithValues(double deg, double mag, double rot){
-    		Robot.swerve.drive(deg, mag, rot);
+    	Robot.swerve.drive(deg, mag, rot);
     }
+    
     public void resetMotors(){
     	Robot.swerve.setupWeels();
     }

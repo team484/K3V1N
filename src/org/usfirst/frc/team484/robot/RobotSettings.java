@@ -19,5 +19,7 @@ public class RobotSettings {
 	public static double pickupSpeed = 1.0; //Between -1.0 and 1.0
 	public static double shooterSpeed = 0;
 	public static double climberSpeed = 1.0;
+	
+	public static final double EPSILON = 0.05;
 } 
 

@@ -24,14 +24,18 @@ public class AutoDriveIR extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     	System.out.println("IR: " + Robot.infraredSensor.getAverageVoltage());
-    	if(Robot.infraredSensor.getAverageVoltage() >= distance){
-    		i++;
-    	} else{
-    		i = 0;
-    	}
+    	
+    	double averageAngle = (Robot.bottomGyro.getAngle());
+    	
+    	i = Robot.infraredSensor.getAverageVoltage() >= distance ? i + 1 : 0;
+    	
+    	double twist = averageAngle / 360.0;
+    	
     	System.out.println(Robot.infraredSensor.getAverageVoltage());
-    	Robot.driveTrain.driveWithValues(0, 0.4 , 0);
+    	Robot.driveTrain.driveWithValues(0, 0.4 , twist);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

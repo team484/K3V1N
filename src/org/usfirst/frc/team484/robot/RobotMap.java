@@ -16,37 +16,38 @@ public class RobotMap {
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
-	public static int frontLeftEncA = 0;
-	public static int frontRightEncA = 4;
-	public static int rearleftEncA = 2 ; 
-	public static int rearRightEncA = 6;
-	public static int frontLeftEncB = 1;
-	public static int frontRightEncB = 5;
-	public static int rearleftEncB = 3;
-	public static int rearRightEncB = 7;
+	public static final int frontLeftEncA = 0;
+	public static final int frontRightEncA = 4;
+	public static final int rearleftEncA = 2 ; 
+	public static final int rearRightEncA = 6;
+	public static final int frontLeftEncB = 1;
+	public static final int frontRightEncB = 5;
+	public static final int rearleftEncB = 3;
+	public static final int rearRightEncB = 7;
 	
-	public static int frontLeftTransMotor = 0;
-	public static int frontRightTransMotor = 2;
-	public static int rearleftTransMotor = 1;
-	public static int rearRightTransMotor = 3;
+	public static final int frontLeftTransMotor = 0;
+	public static final int frontRightTransMotor = 2;
+	public static final int rearleftTransMotor = 1;
+	public static final int rearRightTransMotor = 3;
 	
-	public static int frontLeftRotationalMotor = 4;
-	public static int frontRightRotationalMotor = 6;
-	public static int rearleftRotationalMotor = 5;
-	public static int rearRightRotationalMotor = 7;
+	public static final int frontLeftRotationalMotor = 4;
+	public static final int frontRightRotationalMotor = 6;
+	public static final int rearleftRotationalMotor = 5;
+	public static final int rearRightRotationalMotor = 7;
 	
-	public static int climberMotor = 8;
+	public static final int shooterMotor = 10;
+	public static final int pickupMotor = 11;
 	
-	public static int shooterMotor = 8;
-	public static int shooterEncA = 8;
-	public static int shooterEncB = 9;
+	public static final int shooterEncA = 8;
+	public static final int shooterEncB = 9;
 	
-	public static int pickupMotor = 10;
+	public static final int driveStick = 0;
+	public static final int operatorStick = 1;
 	
-	public static int driveStick = 0;
-	public static int operatorStick = 1;
+	public static final int infraredSensor = 2;
 	
-	public static int infraredSensor = 2;
+	public static final int topGyro = 0;
+	public static final int bottomGyro = 1;
 
 
 }
