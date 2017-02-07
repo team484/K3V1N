@@ -10,6 +10,10 @@ public class RobotSettings {
 	public static double shooterKI = 0.0001;
 	public static double shooterKD = 0.0;
 	
+	public static double rotateKP = 0.02;
+	public static double rotateKI = 0.0;
+	public static double rotateKD = 0.0;
+	
 	public static double wheelEncDistancePerPulse = 0.86694762;
 	public static double shooterEncDistancePerPulse = 0.05;
 	
@@ -20,6 +24,10 @@ public class RobotSettings {
 	public static double shooterSpeed = 0;
 	public static double climberSpeed = 1.0;
 	
-	public static final double EPSILON = 0.05;
+	public static double deadzone = .05;
+	
+	public static double startAngle = 0.0;
+	
+	public static final double EPSILON = 0.05; //"Follow your way of naming the settings?" "yes"
 } 
 

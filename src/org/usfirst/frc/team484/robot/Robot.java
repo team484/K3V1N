@@ -4,6 +4,7 @@ package org.usfirst.frc.team484.robot;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
 import org.usfirst.frc.team484.robot.subsystems.BallShooter;
+import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
@@ -15,7 +16,6 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -45,6 +45,9 @@ public class Robot extends IterativeRobot {
 	public static Talon shooterMotor = new Talon(RobotMap.shooterMotor);
 	public static Talon pickupMotor = new Talon(RobotMap.pickupMotor);
 	
+	public static Talon climbMotorA = new Talon(RobotMap.climbMotorA);
+	public static Talon climbMotorB = new Talon(RobotMap.climbMotorB);
+	
 	public static Encoder frontLeftEnc = new Encoder(RobotMap.frontLeftEncA, RobotMap.frontLeftEncB);
 	public static Encoder frontRightEnc = new Encoder(RobotMap.frontRightEncA, RobotMap.frontRightEncB);
 	public static Encoder rearLeftEnc = new Encoder(RobotMap.rearleftEncA, RobotMap.rearleftEncB);
@@ -58,10 +61,12 @@ public class Robot extends IterativeRobot {
 
 	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
 	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
+	
 	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, rearLeftEnc, frontRightEnc, rearRightEnc, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, frontLeftTransMotor, rearLeftTransMotor, frontRightTransMotor, rearRightTransMotor, false);
 	public static DriveTrain driveTrain = new DriveTrain();
 	public static BallShooter ballShooter = new BallShooter();
 	public static BallPickup ballPickup = new BallPickup();
+	public static Climber climber = new Climber();
 	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();

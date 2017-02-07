@@ -7,15 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class AutoDriveIR extends Command {
-	double distance;
-	int i = 0;
-    public AutoDriveIR(double setpoint) {
+public class ClimberClimb extends Command {
+
+    public ClimberClimb() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	i = 0;
-    	distance = setpoint;
-    	requires(Robot.driveTrain);
+    	requires(Robot.climber);
     }
 
     // Called just before this Command runs the first time
@@ -24,35 +21,21 @@ public class AutoDriveIR extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//TODO: figure out way of using gyro properly
-    	
-    	System.out.println("IR: " + Robot.infraredSensor.getAverageVoltage());
-    	
-    	double averageAngle = (Robot.bottomGyro.getAngle());
-    	
-    	i = Robot.infraredSensor.getAverageVoltage() >= distance ? i + 1 : 0;
-    	
-    	double twist = averageAngle / 360.0;
-    	
-    	System.out.println(Robot.infraredSensor.getAverageVoltage());
-    	Robot.driveTrain.driveWithValues(0.0, 0.4 , 0.0);
-    	
+    	Robot.climber.climb();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return i >= 5;
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveTrain.doNothing();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
+    	Robot.climber.doNothing();
     }
 }
-

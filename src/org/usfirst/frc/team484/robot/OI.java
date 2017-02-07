@@ -1,5 +1,6 @@
 package org.usfirst.frc.team484.robot;
 
+import org.usfirst.frc.team484.robot.commands.DriveWithGyro;
 import org.usfirst.frc.team484.robot.commands.ResetWheels;
 
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -40,8 +41,10 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	Button resetWheels = new JoystickButton(Robot.driveStick, 2);
+	Button gyroDrive = new JoystickButton(Robot.driveStick, 1);
 	public OI(){
 		resetWheels.whileHeld(new ResetWheels());
+		gyroDrive.whileHeld(new DriveWithGyro());
 	}
 	
 }

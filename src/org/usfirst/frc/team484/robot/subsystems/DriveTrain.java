@@ -16,7 +16,8 @@ public class DriveTrain extends Subsystem {
 	
 	//TODO: Add method to rotate wheels into a defensive position to avoid being pushed by enemy robots.
 	
-	private double prevTwist = 0.0;
+	//private double prevTwist = 0.0;
+	private double startAngle = 0.0;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -25,6 +26,7 @@ public class DriveTrain extends Subsystem {
     }
     
     public void driveWithJoystick() {
+    	/*
     	double rotation = Robot.driveStick.getDirectionDegrees();
     	double magnitude = Robot.driveStick.getMagnitude();
     	double twist = -Math.pow(Robot.driveStick.getTwist(), 3) / Math.abs(Robot.driveStick.getTwist());
@@ -33,7 +35,11 @@ public class DriveTrain extends Subsystem {
     	double fixedMag = Math.abs(magnitude) > RobotSettings.EPSILON ? magnitude : 0.0;
     	double fixedTwist = Math.abs(twist) > RobotSettings.EPSILON ? prevTwist = twist : prevTwist;
     	
+    	
     	Robot.swerve.drive(rotation, fixedMag, fixedTwist);
+    	*/
+    	
+    	Robot.swerve.drive(Robot.driveStick.getDirectionDegrees(), Robot.driveStick.getMagnitude(), -Math.pow(Robot.driveStick.getTwist(), 3)/ Math.abs(Robot.driveStick.getTwist()));
     	
     }
     
@@ -48,7 +54,15 @@ public class DriveTrain extends Subsystem {
     public void resetMotors(){
     	Robot.swerve.setupWeels();
     }
-    
+    public double getRobotAngle() {
+    	return (Robot.topGyro.getAngle() - Robot.bottomGyro.getAngle()) / 2.0;
+    }
+    public void driveWithGyro() {
+    	 Robot.swerve.drive(Robot.driveStick.getDirectionDegrees() + (startAngle - getRobotAngle()), Robot.driveStick.getMagnitude(), -Math.pow(Robot.driveStick.getTwist(), 3) / Math.abs(Robot.driveStick.getTwist()));
+    }
+    public void setAngle(double ang) {
+    	startAngle = ang;
+    }
     
     
 }
