@@ -28,6 +28,9 @@ public class RobotSettings {
 	
 	public static double startAngle = 0.0;
 	
+	// FIXME
+	public static double visionCenter = 0.0;
+	
 	public static final double EPSILON = 0.05; //"Follow your way of naming the settings?" "yes"
 } 
 
