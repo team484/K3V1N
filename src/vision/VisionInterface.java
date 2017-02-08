@@ -22,27 +22,19 @@ public class VisionInterface {
      */
     public static double getDriveDirection(double centerpoint) {
         // Get all the data we need from the network table
-        List<Contour> contours = Contour.getContoursFromTable(table);
-        
-        // Average the contours
-        return contours
-                .stream()
-                .mapToDouble((c) -> c.centerX)
-                .average()
-                .orElse(Double.NaN);
+        Iterator<Contour> contours = Contour.getContoursFromTable(table).iterator();
+        HookPair pair = HookPair.fromValues(contours.next(), contours.next());
+
+        return centerpoint - pair.getCenterX();
     }
     
+    //Returns the distance from the center
     public static double getLookDirection(double centerpoint) {
         Iterator<Contour> contours = Contour.getContoursFromTable(table).iterator();
         HookPair pair = HookPair.fromValues(contours.next(), contours.next());
         
-        if(pair.left.area > pair.right.area)
-//            return LookDirection.Right;
-            return centerpoint - pair.getCenterX();
-        else if(pair.left.area < pair.right.area)
-            return centerpoint - pair.getCenterX();
-        else
-            return LookDirection.Center;
+        return pair.left.area - pair.right.area;
+    
     }
 
 }

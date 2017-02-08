@@ -14,6 +14,15 @@ public class RobotSettings {
 	public static double rotateKI = 0.0;
 	public static double rotateKD = 0.0;
 	
+	public static double visionRotKP;
+	public static double visionRotKI;
+	public static double visionRotKD;
+
+	public static double visionTransKP;
+	public static double visionTransKI;
+	public static double visionTransKD;
+
+	
 	public static double wheelEncDistancePerPulse = 0.86694762;
 	public static double shooterEncDistancePerPulse = 0.05;
 	
@@ -32,5 +41,6 @@ public class RobotSettings {
 	public static double visionCenter = 0.0;
 	
 	public static final double EPSILON = 0.05; //"Follow your way of naming the settings?" "yes"
+	public static final double cameraWidth = 1920;
 } 
 

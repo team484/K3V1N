@@ -17,14 +17,18 @@ public class AutoCenterRobot extends Command {
     
     PIDController transPid;
     PIDController rotPid;
-    private double lastX = 0.0;
-    private boolean strideMode = false;
+    //private double lastX = 0.0;
+    private boolean strideMode = true;
+    private boolean rotMode = false;
+    private boolean isInit = true;
+    private boolean isRotInit = true;
+    private int countIter = 0;
 
     public AutoCenterRobot() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.driveTrain);
         
-        transPid = new PIDController(0, 0, 0, new PIDSource() {
+        transPid = new PIDController(RobotSettings.visionTransKP, RobotSettings.visionTransKI, RobotSettings.visionTransKD, new PIDSource() {
             
             @Override public void setPIDSourceType(PIDSourceType pidSource) {}
             @Override public PIDSourceType getPIDSourceType() { return PIDSourceType.kDisplacement; }
@@ -32,44 +36,78 @@ public class AutoCenterRobot extends Command {
             @Override
             public double pidGet() {
                 // Distance from centerpoint
-                return VisionInterface.;
+                return VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2);
             }
 
         }, (d) -> {
-            //
+        	//positive d goes right
+            Robot.driveTrain.driveWithValues(90.0, d, 0.0);
         });
         
-        rotPid = new PIDController(0, 0, 0, new PIDSource() {
+        rotPid = new PIDController(RobotSettings.visionRotKP, RobotSettings.visionRotKI, RobotSettings.visionRotKD, new PIDSource() {
             
             @Override public void setPIDSourceType(PIDSourceType pidSource) {}
             @Override public PIDSourceType getPIDSourceType() { return PIDSourceType.kDisplacement; }
             
             @Override
             public double pidGet() {
-                //
-                return 0;
+                return VisionInterface.getLookDirection(RobotSettings.cameraWidth / 2);
             }
 
         }, (d) -> {
-            //
+            Robot.driveTrain.driveWithValues(90.0, d, 0.0);
         }); 
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {}
+    protected void initialize() {
+    	rotPid.setSetpoint(0.0);
+    	transPid.setSetpoint(0.0);
+    	
+    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        
+        if(strideMode){
+        	if(isInit){
+        		isInit = false;
+        		transPid.reset();
+        		transPid.enable();
+        	}else if(VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2.0) > -20 && VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2.0) < 20){
+        		strideMode = false;
+        		transPid.reset();
+        		transPid.disable();
+        		rotMode = true;
+        		isRotInit = true;
+        		countIter++;
+        	}else{
+        		//code
+        	}
+        } if(rotMode){
+        	if(isRotInit){
+        		isRotInit = false;
+        		rotPid.reset();
+        		rotPid.enable();
+        	}else if(VisionInterface.getLookDirection(RobotSettings.cameraWidth / 2) > -20 && VisionInterface.getLookDirection(RobotSettings.cameraWidth / 2) < 20){
+        		rotMode = false;
+        		strideMode = true;
+        		isInit = true;
+        		rotPid.reset();
+        		rotPid.disable();
+        	}else {
+        		//code
+        	}
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return countIter >= 3;
     }
     protected void end() {}
     protected void interrupted() {}
     
+    /*
     private void step() {
         if(strideMode) {
             double mx = 0;
@@ -102,5 +140,6 @@ public class AutoCenterRobot extends Command {
                 
             }
         }
-    }
+        
+    } */
 }

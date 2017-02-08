@@ -24,6 +24,7 @@ public class Contour {
         this.solidity = solidity;
     }
     
+    
     public static List<Contour> getContoursFromTable(ITable table) {
         double[] centerX = table.getNumberArray("centerX", new double[0]);
         double[] centerY = table.getNumberArray("centerY", new double[0]);
