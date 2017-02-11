@@ -1,7 +1,7 @@
 
 package org.usfirst.frc.team484.robot;
 
-import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
+import org.usfirst.frc.team484.robot.commands.AutoVisionGear;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
 import org.usfirst.frc.team484.robot.subsystems.BallShooter;
 import org.usfirst.frc.team484.robot.subsystems.Climber;
@@ -16,8 +16,11 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import vision.Contour;
+import vision.HookPair;
 
 
 
@@ -131,7 +134,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = new AutoGearPlace();
+		autonomousCommand = new AutoVisionGear();
 		
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -170,6 +173,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
 	}
 
 	/**

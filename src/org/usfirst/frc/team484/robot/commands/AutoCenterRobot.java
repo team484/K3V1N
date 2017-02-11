@@ -11,7 +11,8 @@ import vision.DriveDirection;
 import vision.VisionInterface;
 
 /**
- *
+ *TODO: How accurate is uing two gyros?
+ *Can we replace a large portion of this code by using a gyro?
  */
 public class AutoCenterRobot extends Command {
     
@@ -41,9 +42,9 @@ public class AutoCenterRobot extends Command {
 
         }, (d) -> {
         	//positive d goes right
-            Robot.driveTrain.driveWithValues(90.0, d, 0.0);
+            Robot.driveTrain.driveWithValues(90.0, -d, 0.0);
         });
-        
+        /*
         rotPid = new PIDController(RobotSettings.visionRotKP, RobotSettings.visionRotKI, RobotSettings.visionRotKD, new PIDSource() {
             
             @Override public void setPIDSourceType(PIDSourceType pidSource) {}
@@ -58,17 +59,19 @@ public class AutoCenterRobot extends Command {
             Robot.driveTrain.driveWithValues(90.0, d, 0.0);
         }); 
     }
-
+	*/
+    }
     // Called just before this Command runs the first time
     protected void initialize() {
-    	rotPid.setSetpoint(0.0);
     	transPid.setSetpoint(0.0);
+    	//transPid.setSetpoint(0.0);
     	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(strideMode){
+        /*
+    	if(strideMode){
         	if(isInit){
         		isInit = false;
         		transPid.reset();
@@ -98,11 +101,13 @@ public class AutoCenterRobot extends Command {
         		//code
         	}
         }
+        */
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return countIter >= 3;
+        return VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2) > -50 && VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2) < 50;
     }
     protected void end() {}
     protected void interrupted() {}

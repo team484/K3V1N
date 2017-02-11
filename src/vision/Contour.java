@@ -25,7 +25,7 @@ public class Contour {
     }
     
     
-    public static List<Contour> getContoursFromTable(ITable table) {
+    public static ArrayList<Contour> getContoursFromTable(ITable table) {
         double[] centerX = table.getNumberArray("centerX", new double[0]);
         double[] centerY = table.getNumberArray("centerY", new double[0]);
         double[] area = table.getNumberArray("area", new double[0]);
@@ -33,7 +33,7 @@ public class Contour {
         double[] height = table.getNumberArray("height", new double[0]);
         double[] solidity = table.getNumberArray("solidity", new double[0]);
         
-        List<Contour> contours = new ArrayList<>();
+        ArrayList<Contour> contours = new ArrayList<>();
         
         for(int i = 0; i < centerX.length; i++)
             contours.add(new Contour(centerX[i], centerY[i], area[i], width[i], height[i], solidity[i]));

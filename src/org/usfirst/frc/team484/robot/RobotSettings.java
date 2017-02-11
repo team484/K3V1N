@@ -18,10 +18,11 @@ public class RobotSettings {
 	public static double visionRotKI;
 	public static double visionRotKD;
 
-	public static double visionTransKP;
-	public static double visionTransKI;
-	public static double visionTransKD;
+	public static double visionTransKP = .002;
+	public static double visionTransKI = 0.0;
+	public static double visionTransKD = .001;
 
+	public static double visionErrThreshold = 100.0;
 	
 	public static double wheelEncDistancePerPulse = 0.86694762;
 	public static double shooterEncDistancePerPulse = 0.05;
@@ -37,10 +38,17 @@ public class RobotSettings {
 	
 	public static double startAngle = 0.0;
 	
-	// FIXME
-	public static double visionCenter = 0.0;
+	// FIXME       Like this?
+	public static double visionCenter = 1920.0 / 2.0;
 	
-	public static final double EPSILON = 0.05; //"Follow your way of naming the settings?" "yes"
-	public static final double cameraWidth = 1920;
+	public static final double cameraWidth = 1920.0;
+	
+	//How far the camera is above the bottom of the retroreflective tape
+	public static final double cameraVerticleOffset = 0.0;
+	
+	public static final double tapeHeight = 0.0;
+	
+	
+	public static final double degPerPix = .0586;
 } 
 
