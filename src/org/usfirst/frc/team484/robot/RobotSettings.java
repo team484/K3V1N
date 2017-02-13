@@ -49,6 +49,6 @@ public class RobotSettings {
 	public static final double tapeHeight = 0.0;
 	
 	
-	public static final double degPerPix = .0586;
+	public static final double degPerPix = .0390625;
 } 
 
