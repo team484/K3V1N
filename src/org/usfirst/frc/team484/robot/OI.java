@@ -40,8 +40,8 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
-	Button resetWheels = new JoystickButton(Robot.driveStick, 2);
-	Button gyroDrive = new JoystickButton(Robot.driveStick, 1);
+	Button resetWheels = new JoystickButton(Robot.IO.driveStick, 2);
+	Button gyroDrive = new JoystickButton(Robot.IO.driveStick, 1);
 	public OI(){
 		resetWheels.whileHeld(new ResetWheels());
 		gyroDrive.whileHeld(new DriveWithGyro());

@@ -30,7 +30,7 @@ public class PIDShooter extends Command {
 			@Override
 			public double pidGet() {
 				// TODO Auto-generated method stub
-				return Robot.shooterEnc.getRate();
+				return Robot.IO.shooterEnc.getRate();
 			}
 			
 			@Override

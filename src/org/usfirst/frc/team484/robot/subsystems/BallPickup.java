@@ -18,7 +18,7 @@ public class BallPickup extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     public void pickup() {
-    	Robot.pickupMotor.set(RobotSettings.pickupSpeed);
+    	Robot.IO.pickupMotor.set(RobotSettings.pickupSpeed);
     }
 }
 

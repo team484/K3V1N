@@ -19,12 +19,12 @@ public class Climber extends Subsystem {
     	
     }
     public void doNothing() {
-    	Robot.climbMotorA.set(0);
-    	Robot.climbMotorB.set(0);
+    	Robot.IO.climbMotorA.set(0);
+    	Robot.IO.climbMotorB.set(0);
     }
     public void climb() {
-    	Robot.climbMotorA.set(RobotSettings.climberSpeed);
-    	Robot.climbMotorB.set(RobotSettings.climberSpeed);
+    	Robot.IO.climbMotorA.set(RobotSettings.climberSpeed);
+    	Robot.IO.climbMotorB.set(RobotSettings.climberSpeed);
     }
 }
 

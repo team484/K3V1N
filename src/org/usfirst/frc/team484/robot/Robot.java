@@ -10,6 +10,9 @@ import org.usfirst.frc.team484.robot.subsystems.BallShooter;
 import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -42,46 +45,19 @@ public class Robot extends IterativeRobot {
 
 
 	public static OI oi;
-	public static Talon frontLeftTransMotor = new Talon(RobotMap.frontLeftTransMotor);
-	public static Talon frontRightTransMotor = new Talon(RobotMap.frontRightTransMotor);
-	public static Talon rearLeftTransMotor = new Talon(RobotMap.rearleftTransMotor);
-	public static Talon rearRightTransMotor = new Talon(RobotMap.rearRightTransMotor);
+	public static RobotIO IO = new RobotIO();
 
-	public static Talon frontLeftRotationalMotor = new Talon(RobotMap.frontLeftRotationalMotor);
-	public static Talon frontRightRotationalMotor = new Talon(RobotMap.frontRightRotationalMotor);
-	public static Talon rearLeftRotationalMotor = new Talon(RobotMap.rearleftRotationalMotor);
-	public static Talon rearRightRotationalMotor = new Talon(RobotMap.rearRightRotationalMotor);
-
-	public static Talon shooterMotor = new Talon(RobotMap.shooterMotor);
-	public static Talon pickupMotor = new Talon(RobotMap.pickupMotor);
-
-	public static Talon climbMotorA = new Talon(RobotMap.climbMotorA);
-	public static Talon climbMotorB = new Talon(RobotMap.climbMotorB);
-
-	public static Encoder frontLeftEnc = new Encoder(RobotMap.frontLeftEncA, RobotMap.frontLeftEncB);
-	public static Encoder frontRightEnc = new Encoder(RobotMap.frontRightEncA, RobotMap.frontRightEncB);
-	public static Encoder rearLeftEnc = new Encoder(RobotMap.rearleftEncA, RobotMap.rearleftEncB);
-	public static Encoder rearRightEnc = new Encoder(RobotMap.rearRightEncA, RobotMap.rearRightEncB);
-	public static Encoder shooterEnc = new Encoder(RobotMap.shooterEncA, RobotMap.shooterEncB);
-
-	//public static NetworkTable visionTable = NetworkTable.getTable("grip");
-	public static AnalogInput infraredSensor = new AnalogInput(RobotMap.infraredSensor);
-	public static AnalogGyro topGyro = new AnalogGyro(RobotMap.topGyro);
-	public static AnalogGyro bottomGyro = new AnalogGyro(RobotMap.bottomGyro);
-
-	public static Joystick driveStick = new Joystick(RobotMap.driveStick);
-	public static Joystick operatorStick = new Joystick(RobotMap.operatorStick);
-
-	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, frontLeftEnc, rearLeftEnc, frontRightEnc, rearRightEnc, frontLeftRotationalMotor, rearLeftRotationalMotor, frontRightRotationalMotor, rearRightRotationalMotor, frontLeftTransMotor, rearLeftTransMotor, frontRightTransMotor, rearRightTransMotor, false);
+	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, IO.frontLeftEnc, IO.rearLeftEnc, IO.frontRightEnc, IO.rearRightEnc, IO.frontLeftRotationalMotor, IO.rearLeftRotationalMotor, IO.frontRightRotationalMotor, IO.rearRightRotationalMotor, IO.frontLeftTransMotor, IO.rearLeftTransMotor, IO.frontRightTransMotor, IO.rearRightTransMotor, false);
 	public static DriveTrain driveTrain = new DriveTrain();
 	public static BallShooter ballShooter = new BallShooter();
 	public static BallPickup ballPickup = new BallPickup();
 	public static Climber climber = new Climber();
-	public static GripPipeline visionPipe = new GripPipeline();
+	//public static GripPipeline visionPipe = new GripPipeline();
 	public static VisionThread visionThread;
 	public static Object imgLock = new Object();
 	public static CameraServer camServer;
 	public static double[] centerX = new double[0];
+	public static double[] centerY = new double[0];
 	public static double[] area = new double[0];
 
 	Command autonomousCommand;
@@ -93,11 +69,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		camServer = CameraServer.getInstance();
-		UsbCamera camera = camServer.startAutomaticCapture();
-		camServer.putVideo("cam", 640, 480);
+		//camServer = CameraServer.getInstance();
+		IO.shooterMotor.changeControlMode(TalonControlMode.Voltage);
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(1920, 1080);
+		//camServer.putVideo("cam", 640, 480);
 		
-		camera.setResolution(640, 480);
 		//These Settings don't work! Write a startup script using v4l2-utils!
 		//camera.setExposureManual(17);
 		//camera.setBrightness(0);
@@ -105,10 +82,12 @@ public class Robot extends IterativeRobot {
 		visionThread = new VisionThread(camera, new GripPipeline(), gripPipeline ->{
 			synchronized(imgLock){
 				centerX = new double[gripPipeline.filterContoursOutput().size()];
+				centerY = new double[gripPipeline.filterContoursOutput().size()];
 				area = new double[centerX.length];
 				for (int i = 0; i < centerX.length; i++) {
-					Rect r = Imgproc.boundingRect(gripPipeline.findContoursOutput().get(i));
-					centerX[i] = r.x + (r.width / 2);
+					Rect r = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(i));
+					centerX[i] = r.x;
+					centerY[i] = r.y;
 					area[i] = r.area();
 
 				}
@@ -116,23 +95,23 @@ public class Robot extends IterativeRobot {
 		});
 		oi = new OI();
 		visionThread.start();
-		frontLeftEnc.reset();
-		rearLeftEnc.reset();
-		frontRightEnc.reset();
-		rearRightEnc.reset();
+		IO.frontLeftEnc.reset();
+		IO.rearLeftEnc.reset();
+		IO.frontRightEnc.reset();
+		IO.rearRightEnc.reset();
 
-		frontLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		rearLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		frontRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		rearRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
+		IO.frontLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		IO.rearLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		IO.frontRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		IO.rearRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		IO.shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
 
 		swerve.setWheelbaseDimensions(RobotSettings.wheelBaseX, RobotSettings.wheelBaseY);
 
-		topGyro.initGyro();
-		topGyro.calibrate();
-		bottomGyro.initGyro();
-		bottomGyro.calibrate();
+		IO.topGyro.initGyro();
+		IO.topGyro.calibrate();
+		IO.bottomGyro.initGyro();
+		IO.bottomGyro.calibrate();
 
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -208,8 +187,11 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		double[] centerX;
+		double[] centerY;
+		double distance;
 		synchronized (imgLock) {
 			centerX = this.centerX;	
+			centerY = this.centerY;
 		}
 		double area1 = -1;
 		double area2 = -1;
@@ -228,10 +210,15 @@ public class Robot extends IterativeRobot {
 				}
 			}
 			double trueCenter = (centerX[pos1] + centerX[pos2]) / 2.0;
-			System.out.println((area1 + area2) / 2.0);
+			//System.out.println((area1 + area2) / 2.0);
+			System.out.println("pos1" + centerX[pos1]);
+			System.out.println("pos2" + centerX[pos2]);
+			distance = ((RobotSettings.tapeHeight - RobotSettings.cameraVerticleOffset) * Math.toRadians(RobotSettings.degPerPix)) * (Math.tan(Math.PI / 2.0 - centerY[pos1]) + Math.tan(Math.PI / 2.0 - centerY[pos1])/2);
+
 		} else {
 			System.out.println(" I don't seee the gear peg vision targets right now :(");
 		}
+		System.out.println(centerX.length);
 	}
 
 	/**

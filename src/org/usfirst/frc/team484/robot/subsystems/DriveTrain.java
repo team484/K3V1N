@@ -40,7 +40,7 @@ public class DriveTrain extends Subsystem {
     	Robot.swerve.drive(rotation, fixedMag, fixedTwist);
     	*/
     	
-    	Robot.swerve.drive(Robot.driveStick.getDirectionDegrees(), Robot.driveStick.getMagnitude(), -Math.pow(Robot.driveStick.getTwist(), 3)/ Math.abs(Robot.driveStick.getTwist()));
+    	Robot.swerve.drive(Robot.IO.driveStick.getDirectionDegrees(), Robot.IO.driveStick.getMagnitude(), -Math.pow(Robot.IO.driveStick.getTwist(), 3)/ Math.abs(Robot.IO.driveStick.getTwist()));
     	
     }
     
@@ -56,10 +56,10 @@ public class DriveTrain extends Subsystem {
     	Robot.swerve.setupWeels();
     }
     public double getRobotAngle() {
-    	return (Robot.topGyro.getAngle() - Robot.bottomGyro.getAngle()) / 2.0;
+    	return (Robot.IO.topGyro.getAngle() - Robot.IO.bottomGyro.getAngle()) / 2.0;
     }
     public void driveWithGyro() {
-    	 Robot.swerve.drive(Robot.driveStick.getDirectionDegrees() + (startAngle - getRobotAngle()), Robot.driveStick.getMagnitude(), -Math.pow(Robot.driveStick.getTwist(), 3) / Math.abs(Robot.driveStick.getTwist()));
+    	 Robot.swerve.drive(Robot.IO.driveStick.getDirectionDegrees() + (startAngle - getRobotAngle()), Robot.IO.driveStick.getMagnitude(), -Math.pow(Robot.IO.driveStick.getTwist(), 3) / Math.abs(Robot.IO.driveStick.getTwist()));
     }
     public void setAngle(double ang) {
     	startAngle = ang;
