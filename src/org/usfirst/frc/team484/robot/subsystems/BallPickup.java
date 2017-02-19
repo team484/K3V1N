@@ -2,7 +2,7 @@ package org.usfirst.frc.team484.robot.subsystems;
 
 import org.usfirst.frc.team484.robot.Robot;
 import org.usfirst.frc.team484.robot.RobotSettings;
-import org.usfirst.frc.team484.robot.commands.PIDShooter;
+import org.usfirst.frc.team484.robot.commands.BallPickupDoNothing;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -17,10 +17,16 @@ public class BallPickup extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new PIDShooter());
+    	setDefaultCommand(new BallPickupDoNothing());
     }
     public void pickup() {
-    	Robot.IO.pickupMotor.set(RobotSettings.pickupSpeed);
+    	Robot.io.pickupMotor.set(RobotSettings.pickupSpeed);
+    }
+    public void doNothing() {
+    	Robot.io.pickupMotor.set(0.0);
+    }
+    public void reverse() {
+    	Robot.io.pickupMotor.set(-1.0);
     }
 }
 

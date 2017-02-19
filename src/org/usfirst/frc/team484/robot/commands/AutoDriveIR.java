@@ -26,15 +26,15 @@ public class AutoDriveIR extends Command {
     protected void execute() {
     	//TODO: figure out way of using gyro properly
     	
-    	System.out.println("IR: " + Robot.IO.infraredSensor.getAverageVoltage());
+    	System.out.println("IR: " + Robot.io.infraredSensor.getAverageVoltage());
     	
-    	double averageAngle = (Robot.IO.bottomGyro.getAngle());
+    	double averageAngle = (Robot.io.bottomGyro.getAngle());
     	
-    	i = Robot.IO.infraredSensor.getAverageVoltage() >= distance ? i + 1 : 0;
+    	i = Robot.io.infraredSensor.getAverageVoltage() >= distance ? i + 1 : 0;
     	
     	double twist = averageAngle / 360.0;
     	
-    	System.out.println(Robot.IO.infraredSensor.getAverageVoltage());
+    	System.out.println(Robot.io.infraredSensor.getAverageVoltage());
     	Robot.driveTrain.driveWithValues(0.0, 0.4 , 0.0);
     	
     }

@@ -30,8 +30,8 @@ public class RobotSettings {
 	public static double wheelBaseX = 27.0;
 	public static double wheelBaseY = 17.5;
 	
-	public static double pickupSpeed = 1.0; //Between -1.0 and 1.0
-	public static double shooterSpeed = 0;
+	public static double pickupSpeed = -1.0; //Between -1.0 and 1.0
+	public static double shooterSpeed = -3000;
 	public static double climberSpeed = 1.0;
 	
 	public static double deadzone = .05;

@@ -1,7 +1,9 @@
 package org.usfirst.frc.team484.robot;
 
+import org.usfirst.frc.team484.robot.commands.Agitate;
 import org.usfirst.frc.team484.robot.commands.DriveWithGyro;
 import org.usfirst.frc.team484.robot.commands.PIDShooter;
+import org.usfirst.frc.team484.robot.commands.PickupBalls;
 import org.usfirst.frc.team484.robot.commands.ResetWheels;
 
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -41,13 +43,16 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
-	Button resetWheels = new JoystickButton(Robot.IO.driveStick, 2);
-	Button gyroDrive = new JoystickButton(Robot.IO.driveStick, 1);
-	Button shooterShoot = new JoystickButton(Robot.IO.operatorStick, 1);
+	Button resetWheels = new JoystickButton(Robot.io.driveStick, 2);
+	Button gyroDrive = new JoystickButton(Robot.io.driveStick, 1);
+	Button shooterShoot = new JoystickButton(Robot.io.operatorStick, 1);
+	Button pickupButton = new JoystickButton(Robot.io.operatorStick, 2);
 	public OI(){
 		resetWheels.whileHeld(new ResetWheels());
 		gyroDrive.whileHeld(new DriveWithGyro());
 		shooterShoot.whileHeld(new PIDShooter());
+		shooterShoot.whileHeld(new Agitate());
+		pickupButton.whileHeld(new PickupBalls());
 	}
 	
 }

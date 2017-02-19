@@ -19,10 +19,10 @@ public class BallShooter extends Subsystem {
     	setDefaultCommand(new ShooterDoNothing());
 ;    }
     public void setShooterSpeed(double speed) {
-    	Robot.IO.shooterMotor.set(speed);
+    	Robot.io.shooterMotor.set(speed);
     }
     public void doNothing() {
-    	Robot.IO.shooterMotor.set(0.0);
+    	Robot.io.shooterMotor.set(0.0);
     }
 }
 

@@ -2,6 +2,7 @@ package org.usfirst.frc.team484.robot.subsystems;
 
 import org.usfirst.frc.team484.robot.Robot;
 import org.usfirst.frc.team484.robot.commands.Agitate;
+import org.usfirst.frc.team484.robot.commands.AgitateDoNothing;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -16,10 +17,10 @@ public class Agitator extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new Agitate());
+    	setDefaultCommand(new AgitateDoNothing());
     }
     public void agitate(double speed){
-    	Robot.IO.agitateMotor.set(speed);
+    	Robot.io.agitateMotor.set(speed);
     }
 }
 

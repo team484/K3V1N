@@ -1,11 +1,6 @@
 
 package org.usfirst.frc.team484.robot;
 
-import java.awt.Image;
-
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Rect;
-import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team484.robot.commands.AutoVisionGear;
 import org.usfirst.frc.team484.robot.subsystems.Agitator;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
@@ -13,28 +8,12 @@ import org.usfirst.frc.team484.robot.subsystems.BallShooter;
 import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
-
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.vision.VisionThread;
-import vision.Contour;
-import vision.GripPipeline;
-import vision.HookPair;
 
 
 
@@ -49,25 +28,23 @@ public class Robot extends IterativeRobot {
 
 
 	public static OI oi;
-	public static RobotIO IO = new RobotIO();
+	public static RobotIO io;
 
-	public static SwerveDrive swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, IO.frontLeftEnc, IO.rearLeftEnc, IO.frontRightEnc, IO.rearRightEnc, IO.frontLeftRotationalMotor, IO.rearLeftRotationalMotor, IO.frontRightRotationalMotor, IO.rearRightRotationalMotor, IO.frontLeftTransMotor, IO.rearLeftTransMotor, IO.frontRightTransMotor, IO.rearRightTransMotor, false);
-	public static DriveTrain driveTrain = new DriveTrain();
-	public static BallShooter ballShooter = new BallShooter();
-	public static BallPickup ballPickup = new BallPickup();
-	public static Climber climber = new Climber();
-	public static Agitator agitate = new Agitator();
+	public static SwerveDrive swerve;
+	public static DriveTrain driveTrain;
+	public static BallShooter ballShooter;
+	public static BallPickup ballPickup;
+	public static Climber climber;
+	public static Agitator agitate;
 	//public static GripPipeline visionPipe = new GripPipeline();
-	public static VisionThread visionThread;
-	public static Object imgLock = new Object();
-	public static double[] centerX = new double[0];
-	public static double[] centerY = new double[0];
-	public static double[] area = new double[0];
+	//public static VisionThread visionThread;
+	//public static Object imgLock = new Object();
+	//public static double[] centerX = new double[0];
+	//public static double[] centerY = new double[0];
+	//public static double[] area = new double[0];
 	
-	public static CameraServer camServer = CameraServer.getInstance();
-	public static CvSink visionVid = camServer.getVideo();
-	UsbCamera camera1 = camServer.startAutomaticCapture(1);
-	UsbCamera camera2 = camServer.startAutomaticCapture(3);
+	//public static CameraServer camServer;
+	//public static CvSink visionVid = camServer.getVideo();
 
 
 	Command autonomousCommand;
@@ -79,10 +56,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		io = new RobotIO();
+		swerve = new SwerveDrive(RobotSettings.kP, RobotSettings.kI, RobotSettings.kD, io.frontLeftEnc, io.rearLeftEnc, io.frontRightEnc, io.rearRightEnc, io.frontLeftRotationalMotor, io.rearLeftRotationalMotor, io.frontRightRotationalMotor, io.rearRightRotationalMotor, io.frontLeftTransMotor, io.rearLeftTransMotor, io.frontRightTransMotor, io.rearRightTransMotor, false);
+		driveTrain = new DriveTrain();
+		ballShooter = new BallShooter();
+		ballPickup = new BallPickup();
+		climber = new Climber();
+		agitate = new Agitator();
 		//camServer = CameraServer.getInstance();
-		IO.shooterMotor.changeControlMode(TalonControlMode.Voltage);
+		//camServer = CameraServer.getInstance();
+		//IO.shooterMotor.changeControlMode(TalonControlMode.Voltage);
 		
-		camera1.setResolution(1920, 1080);
 		//camServer.putVideo("cam", 640, 480);
 		
 		//These Settings don't work! Write a startup script using v4l2-utils!
@@ -106,24 +90,24 @@ public class Robot extends IterativeRobot {
 		});
 		*/
 		oi = new OI();
-		visionThread.start();
-		IO.frontLeftEnc.reset();
-		IO.rearLeftEnc.reset();
-		IO.frontRightEnc.reset();
-		IO.rearRightEnc.reset();
+		//visionThread.start();
+		io.frontLeftEnc.reset();
+		io.rearLeftEnc.reset();
+		io.frontRightEnc.reset();
+		io.rearRightEnc.reset();
 
-		IO.frontLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		IO.rearLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		IO.frontRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		IO.rearRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		IO.shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
+		io.frontLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		io.rearLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		io.frontRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		io.rearRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
+		io.shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
 
 		swerve.setWheelbaseDimensions(RobotSettings.wheelBaseX, RobotSettings.wheelBaseY);
 
-		IO.topGyro.initGyro();
-		IO.topGyro.calibrate();
-		IO.bottomGyro.initGyro();
-		IO.bottomGyro.calibrate();
+		io.topGyro.initGyro();
+		io.topGyro.calibrate();
+		io.bottomGyro.initGyro();
+		io.bottomGyro.calibrate();
 
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());

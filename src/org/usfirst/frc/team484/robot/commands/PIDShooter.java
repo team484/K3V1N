@@ -30,7 +30,7 @@ public class PIDShooter extends Command {
 			@Override
 			public double pidGet() {
 				// TODO Auto-generated method stub
-				return Robot.IO.shooterEnc.getRate();
+				return Robot.io.shooterEnc.getRate();
 			}
 			
 			@Override
@@ -44,6 +44,7 @@ public class PIDShooter extends Command {
 			public void pidWrite(double output) {
 				// TODO Auto-generated method stub
 				Robot.ballShooter.setShooterSpeed(output);
+				System.out.println(output);
 				
 			}
 		});
@@ -70,10 +71,12 @@ public class PIDShooter extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	pid.disable();
+    	Robot.ballShooter.doNothing();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

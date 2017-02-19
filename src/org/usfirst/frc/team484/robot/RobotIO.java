@@ -1,19 +1,12 @@
 package org.usfirst.frc.team484.robot;
 
-import org.usfirst.frc.team484.robot.subsystems.BallPickup;
-import org.usfirst.frc.team484.robot.subsystems.BallShooter;
-import org.usfirst.frc.team484.robot.subsystems.Climber;
-import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
-
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.vision.VisionThread;
 
 public class RobotIO {
 	public CANTalon frontLeftTransMotor;
@@ -51,7 +44,7 @@ public class RobotIO {
 
 	
 	
-	RobotIO(){
+	public RobotIO() {
 		frontLeftTransMotor = new CANTalon(RobotMap.frontLeftTransMotor);
 		frontRightTransMotor = new CANTalon(RobotMap.frontRightTransMotor);
 		rearLeftTransMotor = new CANTalon(RobotMap.rearleftTransMotor);
