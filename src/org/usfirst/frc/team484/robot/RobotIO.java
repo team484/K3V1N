@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.vision.VisionThread;
 
 public class RobotIO {
@@ -26,11 +27,14 @@ public class RobotIO {
 	public CANTalon rearRightRotationalMotor;
 
 	public CANTalon shooterMotor;
-	public CANTalon pickupMotor;
+	public VictorSP pickupMotor;
 
-	public CANTalon climbMotorA;
-	public CANTalon climbMotorB;
+	public VictorSP climbMotorA;
+	public VictorSP climbMotorB;
+	
+	public VictorSP agitateMotor;
 
+	
 	public Encoder frontLeftEnc;
 	public Encoder frontRightEnc;
 	public Encoder rearLeftEnc;
@@ -59,10 +63,12 @@ public class RobotIO {
 		rearRightRotationalMotor = new CANTalon(RobotMap.rearRightRotationalMotor);
 		
 		shooterMotor = new CANTalon(RobotMap.shooterMotor);
-		pickupMotor = new CANTalon(RobotMap.pickupMotor);
+		pickupMotor = new VictorSP(RobotMap.pickupMotor);
 
-		climbMotorA = new CANTalon(RobotMap.climbMotorA);
-		climbMotorB = new CANTalon(RobotMap.climbMotorB);
+		climbMotorA = new VictorSP(RobotMap.climbMotorA);
+		climbMotorB = new VictorSP(RobotMap.climbMotorB);
+		
+		agitateMotor = new VictorSP(RobotMap.agitatorMotor);
 
 		frontLeftEnc = new Encoder(RobotMap.frontLeftEncA, RobotMap.frontLeftEncB);
 		frontRightEnc = new Encoder(RobotMap.frontRightEncA, RobotMap.frontRightEncB);

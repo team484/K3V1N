@@ -1,10 +1,13 @@
 
 package org.usfirst.frc.team484.robot;
 
+import java.awt.Image;
+
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team484.robot.commands.AutoVisionGear;
+import org.usfirst.frc.team484.robot.subsystems.Agitator;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
 import org.usfirst.frc.team484.robot.subsystems.BallShooter;
 import org.usfirst.frc.team484.robot.subsystems.Climber;
@@ -13,6 +16,7 @@ import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
+import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -52,13 +56,19 @@ public class Robot extends IterativeRobot {
 	public static BallShooter ballShooter = new BallShooter();
 	public static BallPickup ballPickup = new BallPickup();
 	public static Climber climber = new Climber();
+	public static Agitator agitate = new Agitator();
 	//public static GripPipeline visionPipe = new GripPipeline();
 	public static VisionThread visionThread;
 	public static Object imgLock = new Object();
-	public static CameraServer camServer;
 	public static double[] centerX = new double[0];
 	public static double[] centerY = new double[0];
 	public static double[] area = new double[0];
+	
+	public static CameraServer camServer = CameraServer.getInstance();
+	public static CvSink visionVid = camServer.getVideo();
+	UsbCamera camera1 = camServer.startAutomaticCapture(1);
+	UsbCamera camera2 = camServer.startAutomaticCapture(3);
+
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -71,15 +81,16 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		//camServer = CameraServer.getInstance();
 		IO.shooterMotor.changeControlMode(TalonControlMode.Voltage);
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.setResolution(1920, 1080);
+		
+		camera1.setResolution(1920, 1080);
 		//camServer.putVideo("cam", 640, 480);
 		
 		//These Settings don't work! Write a startup script using v4l2-utils!
 		//camera.setExposureManual(17);
 		//camera.setBrightness(0);
 		//camera.setWhiteBalanceManual(5000);
-		visionThread = new VisionThread(camera, new GripPipeline(), gripPipeline ->{
+		/*
+		visionThread = new VisionThread(camera1, new GripPipeline(), gripPipeline ->{
 			synchronized(imgLock){
 				centerX = new double[gripPipeline.filterContoursOutput().size()];
 				centerY = new double[gripPipeline.filterContoursOutput().size()];
@@ -93,6 +104,7 @@ public class Robot extends IterativeRobot {
 				}
 			}
 		});
+		*/
 		oi = new OI();
 		visionThread.start();
 		IO.frontLeftEnc.reset();
@@ -186,6 +198,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		/*
 		double[] centerX;
 		double[] centerY;
 		double distance;
@@ -219,6 +232,12 @@ public class Robot extends IterativeRobot {
 			System.out.println(" I don't seee the gear peg vision targets right now :(");
 		}
 		System.out.println(centerX.length);
+		
+		
+		if(IO.driveStick.getTrigger()){
+			UsbCamera camera1 = camServer.startAutomaticCapture();
+		}
+		*/
 	}
 
 	/**

@@ -35,11 +35,13 @@ public class RobotMap {
 	public static final int rearleftRotationalMotor = 4;
 	public static final int rearRightRotationalMotor = 8;
 	
-	public static final int shooterMotor = 9;
+	public static final int agitatorMotor = 2;
+	
+	public static final int shooterMotor = 3;
 	public static final int pickupMotor = 11;
 	
-	public static final int climbMotorA = 12;
-	public static final int climbMotorB = 13;
+	public static final int climbMotorA = 0;
+	public static final int climbMotorB = 1;
 	
 	public static final int shooterEncA = 8;
 	public static final int shooterEncB = 9;
@@ -51,6 +53,9 @@ public class RobotMap {
 	
 	public static final int topGyro = 0;
 	public static final int bottomGyro = 1;
+	
+	public static final String cam0 = "cam0";
+	public static final String cam1 = "cam3";
 	
 
 

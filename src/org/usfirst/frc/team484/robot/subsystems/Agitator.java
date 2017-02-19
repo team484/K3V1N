@@ -1,15 +1,14 @@
 package org.usfirst.frc.team484.robot.subsystems;
 
 import org.usfirst.frc.team484.robot.Robot;
-import org.usfirst.frc.team484.robot.RobotSettings;
-import org.usfirst.frc.team484.robot.commands.PIDShooter;
+import org.usfirst.frc.team484.robot.commands.Agitate;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
  */
-public class BallPickup extends Subsystem {
+public class Agitator extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -17,10 +16,10 @@ public class BallPickup extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new PIDShooter());
+    	setDefaultCommand(new Agitate());
     }
-    public void pickup() {
-    	Robot.IO.pickupMotor.set(RobotSettings.pickupSpeed);
+    public void agitate(double speed){
+    	Robot.IO.agitateMotor.set(speed);
     }
 }
 
