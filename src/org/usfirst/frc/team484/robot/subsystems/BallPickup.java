@@ -26,7 +26,7 @@ public class BallPickup extends Subsystem {
     	Robot.io.pickupMotor.set(0.0);
     }
     public void reverse() {
-    	Robot.io.pickupMotor.set(-1.0);
+    	Robot.io.pickupMotor.set(1.0);
     }
 }
 

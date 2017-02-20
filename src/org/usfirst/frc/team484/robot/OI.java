@@ -5,6 +5,7 @@ import org.usfirst.frc.team484.robot.commands.DriveWithGyro;
 import org.usfirst.frc.team484.robot.commands.PIDShooter;
 import org.usfirst.frc.team484.robot.commands.PickupBalls;
 import org.usfirst.frc.team484.robot.commands.ResetWheels;
+import org.usfirst.frc.team484.robot.commands.ReversePickup;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -47,12 +48,16 @@ public class OI {
 	Button gyroDrive = new JoystickButton(Robot.io.driveStick, 1);
 	Button shooterShoot = new JoystickButton(Robot.io.operatorStick, 1);
 	Button pickupButton = new JoystickButton(Robot.io.operatorStick, 2);
+	Button pickupButtonTwo = new JoystickButton(Robot.io.operatorStick, 5);
+	Button reverseButton = new JoystickButton(Robot.io.operatorStick, 3);
 	public OI(){
 		resetWheels.whileHeld(new ResetWheels());
 		gyroDrive.whileHeld(new DriveWithGyro());
 		shooterShoot.whileHeld(new PIDShooter());
 		shooterShoot.whileHeld(new Agitate());
 		pickupButton.whileHeld(new PickupBalls());
+		pickupButtonTwo.whileHeld(new PickupBalls());
+		reverseButton.whileHeld(new ReversePickup());
 	}
 	
 }
