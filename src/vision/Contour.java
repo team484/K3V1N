@@ -1,19 +1,13 @@
 package vision;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.tables.ITable;
 
+//Object that represents a given contour found by GRIP
 public class Contour {
     
-    double centerX;
-    double centerY;
-    double area;
-    double width;
-    double height;
-    double solidity;
+    public double centerX, centerY, area, width, height, solidity;
     
     public Contour(double centerX, double centerY, double area, double width, double height, double solidity) {
         this.centerX = centerX;
