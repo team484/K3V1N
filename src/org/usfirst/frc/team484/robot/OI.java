@@ -50,6 +50,7 @@ public class OI {
 	Button pickupButton = new JoystickButton(Robot.io.operatorStick, 2);
 	Button pickupButtonTwo = new JoystickButton(Robot.io.operatorStick, 5);
 	Button reverseButton = new JoystickButton(Robot.io.operatorStick, 3);
+	Button climbButton = new JoystickButton(Robot.io.operatorStick, 6);
 	public OI(){
 		resetWheels.whileHeld(new ResetWheels());
 		gyroDrive.whileHeld(new DriveWithGyro());
