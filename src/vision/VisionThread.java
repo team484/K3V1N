@@ -30,6 +30,7 @@ public class VisionThread extends Thread {
 	}
 	
 	//Gets called in new thread when this class' .start() method is called
+	@Override
 	public void run() { 
 		while (shouldUpdate) {
 			long startTime = System.currentTimeMillis();
