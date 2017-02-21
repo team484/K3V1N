@@ -16,12 +16,14 @@ public class GearCalculator {
 		distances.add(results[0]);
 		distances.add(distanceFromWidth(contours, camSettings));
 		distances.add(distanceFromSpacing(contours, camSettings));
-		double avgDistance = (distances.get(0) + distances.get(1) + distances.get(2)) / 3.0;
+		distances.sort((c1, c2) -> (int)(c2 * 100000.0 - c1 * 100000.0));
+		
+		double medianDistance = distances.get(1);
 		double angleX = offsetXAngleFromCenters(contours, camSettings);
-		double offsetX = Math.tan(angleX) * avgDistance;
+		double offsetX = Math.tan(angleX) * medianDistance;
 		//TODO: Properly look at different distance values to error correct
 		
-		return new VisionResults(angleX + camSettings.angleX, 0, offsetX + camSettings.posX, 0, avgDistance + camSettings.posY, results[1]);
+		return new VisionResults(angleX + camSettings.angleX, 0, offsetX + camSettings.posX, 0, medianDistance + camSettings.posY, results[1]);
 	}
 	
 	//Calculates distance to target based on height of the tape
@@ -48,8 +50,14 @@ public class GearCalculator {
 		double targetAngleLoS2 = Math.PI / 2.0 - angle / 2.0 - Math.asin(Math.sin(angle) * results[1] / TAPE_SPACING);
 		double targetAngleLOC1 = Math.acos((Math.pow(TAPE_SPACING, 2)+Math.pow(results[1], 2)-Math.pow(results[0], 2))/(2.0 * TAPE_SPACING * results[1])) + angle / 2.0 - Math.PI / 2.0;
 		double targetAngleLOC2 = Math.PI / 2.0 - angle / 2.0 - Math.acos((Math.pow(TAPE_SPACING, 2)+Math.pow(results[0], 2)-Math.pow(results[1], 2))/(2.0 * TAPE_SPACING * results[0]));
-
-		return new double[] {(results[0] + results[1]) / 2.0, (targetAngleLoS1 + targetAngleLoS2 + targetAngleLOC1 + targetAngleLOC2) / 4.0};
+		ArrayList<Double> angles = new ArrayList<Double>();
+		angles.add(targetAngleLoS1);
+		angles.add(targetAngleLoS2);
+		angles.add(targetAngleLOC1);
+		angles.add(targetAngleLOC2);
+		angles.sort((c1, c2) -> (int)(c2 * 100000.0 - c1 * 100000.0));
+		double medianAngle = (angles.get(1) + angles.get(2))/2.0; //Might be better to get the 3rd smallest angle instead of the median
+		return new double[] {(results[0] + results[1]) / 2.0, medianAngle};
 	}
 	
 	//Calculates distance to target based on the width of the tape
