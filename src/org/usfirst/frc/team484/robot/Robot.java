@@ -9,6 +9,7 @@ import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -100,7 +101,8 @@ public class Robot extends IterativeRobot {
 		io.rearLeftEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
 		io.frontRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
 		io.rearRightEnc.setDistancePerPulse(RobotSettings.wheelEncDistancePerPulse);
-		io.shooterEnc.setDistancePerPulse(RobotSettings.shooterEncDistancePerPulse);
+		io.shooterEnc.setDistancePerPulse(.05);
+
 
 		swerve.setWheelbaseDimensions(RobotSettings.wheelBaseX, RobotSettings.wheelBaseY);
 
@@ -108,6 +110,8 @@ public class Robot extends IterativeRobot {
 		io.topGyro.calibrate();
 		io.bottomGyro.initGyro();
 		io.bottomGyro.calibrate();
+		
+		//io.led.set(Relay.Value.kOn);
 
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -182,6 +186,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		System.out.println(io.shooterEnc.getRate());
 		/*
 		double[] centerX;
 		double[] centerY;

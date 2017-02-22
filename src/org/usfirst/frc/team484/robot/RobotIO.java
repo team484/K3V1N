@@ -6,7 +6,11 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
 public class RobotIO {
 	public CANTalon frontLeftTransMotor;
@@ -26,6 +30,7 @@ public class RobotIO {
 	public VictorSP climbMotorB;
 	
 	public VictorSP agitateMotor;
+	public Relay led; 
 
 	
 	public Encoder frontLeftEnc;
@@ -41,6 +46,9 @@ public class RobotIO {
 
 	public Joystick driveStick;
 	public Joystick operatorStick;
+	
+	
+	public NetworkTable itab = NetworkTable.getTable(RobotSettings.iTable);
 
 	
 	
@@ -76,7 +84,7 @@ public class RobotIO {
 
 		driveStick = new Joystick(RobotMap.driveStick);
 		operatorStick = new Joystick(RobotMap.operatorStick);
-		
+		//led = new Relay(5);
 		
 
 	}

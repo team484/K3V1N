@@ -36,15 +36,15 @@ public class PIDShooter extends Command {
 			@Override
 			public PIDSourceType getPIDSourceType() {
 				// TODO Auto-generated method stub
-				return PIDSourceType.kDisplacement;
+				return PIDSourceType.kRate;
 			}
 		}, new PIDOutput() {
 			
 			@Override
 			public void pidWrite(double output) {
 				// TODO Auto-generated method stub
-				Robot.ballShooter.setShooterSpeed(output);
-				System.out.println(output);
+				Robot.ballShooter.setShooterSpeed(-output);
+				System.out.println("PIDout:" + output);
 				
 			}
 		});
@@ -60,7 +60,7 @@ public class PIDShooter extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	System.out.println("erro:" + pid.getError());
     }
 
     // Make this return true when this Command no longer needs to run execute()

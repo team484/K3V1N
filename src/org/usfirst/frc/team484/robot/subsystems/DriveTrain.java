@@ -5,7 +5,6 @@ import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.DriveWithJoystick;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import vision.VisionInterface;
 
 /**
  *

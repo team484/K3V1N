@@ -4,11 +4,13 @@ import org.usfirst.frc.team484.robot.Robot;
 import org.usfirst.frc.team484.robot.RobotSettings;
 
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import vision.DriveDirection;
-import vision.VisionInterface;
+import vision.CameraSettings;
+import vision.Contour;
+import vision.calculators.GearCalculator;
 
 /**
  *TODO: How accurate is uing two gyros?
@@ -17,13 +19,8 @@ import vision.VisionInterface;
 public class AutoCenterRobot extends Command {
     
     PIDController transPid;
-    PIDController rotPid;
     //private double lastX = 0.0;
-    private boolean strideMode = true;
-    private boolean rotMode = false;
-    private boolean isInit = true;
-    private boolean isRotInit = true;
-    private int countIter = 0;
+ 
 
     public AutoCenterRobot() {
         // Use requires() here to declare subsystem dependencies
@@ -37,13 +34,19 @@ public class AutoCenterRobot extends Command {
             @Override
             public double pidGet() {
                 // Distance from centerpoint
-                return VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2);
+            	return GearCalculator.run(Contour.getContoursFromTable(Robot.io.itab), RobotSettings.camSettings).inchesX;
             }
 
-        }, (d) -> {
-        	//positive d goes right
-            Robot.driveTrain.driveWithValues(90.0, -d, 0.0);
-        });
+        }, new PIDOutput() {
+        	
+			
+			@Override
+			public void pidWrite(double output) {
+				// TODO Auto-generated method stub
+				Robot.driveTrain.driveWithValues(90.0, output, 0.0);
+				
+			}
+		});
         /*
         rotPid = new PIDController(RobotSettings.visionRotKP, RobotSettings.visionRotKI, RobotSettings.visionRotKD, new PIDSource() {
             
@@ -107,10 +110,14 @@ public class AutoCenterRobot extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2) > -50 && VisionInterface.getDriveDirection(RobotSettings.cameraWidth / 2) < 50;
+    	return GearCalculator.run(Contour.getContoursFromTable(Robot.io.itab), RobotSettings.camSettings).inchesX < RobotSettings.errThresh && GearCalculator.run(Contour.getContoursFromTable(Robot.io.itab), RobotSettings.camSettings).inchesX > -RobotSettings.errThresh;
     }
-    protected void end() {}
-    protected void interrupted() {}
+    protected void end() {
+    	Robot.driveTrain.doNothing();
+    }
+    protected void interrupted() {
+    	end();
+    }
     
     /*
     private void step() {

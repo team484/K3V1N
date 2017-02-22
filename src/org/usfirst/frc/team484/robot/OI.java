@@ -2,6 +2,7 @@ package org.usfirst.frc.team484.robot;
 
 import org.usfirst.frc.team484.robot.commands.Agitate;
 import org.usfirst.frc.team484.robot.commands.DriveWithGyro;
+import org.usfirst.frc.team484.robot.commands.JoystickClimb;
 import org.usfirst.frc.team484.robot.commands.PIDShooter;
 import org.usfirst.frc.team484.robot.commands.PickupBalls;
 import org.usfirst.frc.team484.robot.commands.ResetWheels;
@@ -59,6 +60,7 @@ public class OI {
 		pickupButton.whileHeld(new PickupBalls());
 		pickupButtonTwo.whileHeld(new PickupBalls());
 		reverseButton.whileHeld(new ReversePickup());
+		climbButton.whileHeld(new JoystickClimb());
 	}
 	
 }
