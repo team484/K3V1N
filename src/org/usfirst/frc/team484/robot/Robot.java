@@ -36,18 +36,10 @@ public class Robot extends IterativeRobot {
 	public static BallShooter ballShooter;
 	public static BallPickup ballPickup;
 	public static Climber climber;
-	public static Agitator agitate;
-	//public static GripPipeline visionPipe = new GripPipeline();
-	//public static VisionThread visionThread;
-	//public static Object imgLock = new Object();
-	//public static double[] centerX = new double[0];
-	//public static double[] centerY = new double[0];
-	//public static double[] area = new double[0];
+	public static Agitator agitator;
 	
-	//public static CameraServer camServer;
-	//public static CvSink visionVid = camServer.getVideo();
-
-
+	public static CameraSwitch cameraSwitcher;
+	
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -63,35 +55,12 @@ public class Robot extends IterativeRobot {
 		ballShooter = new BallShooter();
 		ballPickup = new BallPickup();
 		climber = new Climber();
-		agitate = new Agitator();
-		//camServer = CameraServer.getInstance();
-		//camServer = CameraServer.getInstance();
-		//IO.shooterMotor.changeControlMode(TalonControlMode.Voltage);
+		agitator = new Agitator();
 		
-		//camServer.putVideo("cam", 640, 480);
-		
-		//These Settings don't work! Write a startup script using v4l2-utils!
-		//camera.setExposureManual(17);
-		//camera.setBrightness(0);
-		//camera.setWhiteBalanceManual(5000);
-		/*
-		visionThread = new VisionThread(camera1, new GripPipeline(), gripPipeline ->{
-			synchronized(imgLock){
-				centerX = new double[gripPipeline.filterContoursOutput().size()];
-				centerY = new double[gripPipeline.filterContoursOutput().size()];
-				area = new double[centerX.length];
-				for (int i = 0; i < centerX.length; i++) {
-					Rect r = Imgproc.boundingRect(gripPipeline.filterContoursOutput().get(i));
-					centerX[i] = r.x;
-					centerY[i] = r.y;
-					area[i] = r.area();
+		cameraSwitcher = new CameraSwitch(io.driveStick);
 
-				}
-			}
-		});
-		*/
 		oi = new OI();
-		//visionThread.start();
+		
 		io.frontLeftEnc.reset();
 		io.rearLeftEnc.reset();
 		io.frontRightEnc.reset();
@@ -111,19 +80,10 @@ public class Robot extends IterativeRobot {
 		io.bottomGyro.initGyro();
 		io.bottomGyro.calibrate();
 		
-		//io.led.set(Relay.Value.kOn);
-
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
 	@Override
 	public void disabledInit() {
 
@@ -187,46 +147,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		System.out.println(io.shooterEnc.getRate());
-		/*
-		double[] centerX;
-		double[] centerY;
-		double distance;
-		synchronized (imgLock) {
-			centerX = this.centerX;	
-			centerY = this.centerY;
-		}
-		double area1 = -1;
-		double area2 = -1;
-		int pos1 = -1;
-		int pos2 = -1;
-		if (centerX.length > 1) {
-			for (int i = 0; i < centerX.length; i++) {
-				if (area[i] > area1) {
-					area2 = area1;
-					pos2 = pos1;
-					area1 = area[i];
-					pos1 = i;
-				} else if (area[i] > area2) {
-					area2 = area[i];
-					pos2 = i;
-				}
-			}
-			double trueCenter = (centerX[pos1] + centerX[pos2]) / 2.0;
-			//System.out.println((area1 + area2) / 2.0);
-			System.out.println("pos1" + centerX[pos1]);
-			System.out.println("pos2" + centerX[pos2]);
-			distance = ((RobotSettings.tapeHeight - RobotSettings.cameraVerticleOffset) * Math.toRadians(RobotSettings.degPerPix)) * (Math.tan(Math.PI / 2.0 - centerY[pos1]) + Math.tan(Math.PI / 2.0 - centerY[pos1])/2);
-
-		} else {
-			System.out.println(" I don't seee the gear peg vision targets right now :(");
-		}
-		System.out.println(centerX.length);
-		
-		
-		if(IO.driveStick.getTrigger()){
-			UsbCamera camera1 = camServer.startAutomaticCapture();
-		}
-		*/
 	}
 
 	/**
