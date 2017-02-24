@@ -420,23 +420,22 @@ public class SwerveDrive {
 			default:
 				return (Double) null;
 			}
-		} else {
-			switch(motor.value) {
-			case 0:
-				return transFL.get();
-			case 1:
-				return transRL.get();
-			case 2:
-				return transFR.get();
-			case 3:
-				return transRR.get();
-			default:
-				return (Double) null;
-			}	
+		}
+		switch(motor.value) {
+		case 0:
+			return transFL.get();
+		case 1:
+			return transRL.get();
+		case 2:
+			return transFR.get();
+		case 3:
+			return transRR.get();
+		default:
+			return (Double) null;
 		}
 	}
 
-	private double findEncAng(double angle) {
+	private static double findEncAng(double angle) {
 		while (angle > 180) {
 			angle -= 360;
 		}
@@ -529,7 +528,7 @@ public class SwerveDrive {
 
 	}
 
-	private boolean goToAngle(double wheelRot, double currentWheelAngle) {
+	private static boolean goToAngle(double wheelRot, double currentWheelAngle) {
 		if (Math.abs(wheelRot - currentWheelAngle) < 90) {
 			return true;
 		}
@@ -544,7 +543,110 @@ public class SwerveDrive {
 		}
 		return false;
 	}
+	
+	/**
+	 * Used to force swerve drive to move the robot on the arc centered x units to the right
+	 * and y units in front of the robot.
+	 * @param centerX the x coordinate of the point of rotation to the right of the center of the robot
+	 * @param centerY the y coordinate of the point of rotation in front of the center of the robot
+	 * @param velocity the speed the wheels will move from -1 to 1. Positive is clockwise
+	 */
+	public void driveRadially(double centerX, double centerY, double velocity) {
+		double flAngle, rlAngle, frAngle, rrAngle = 0.0;
+		if (velocity > 0) {
+			flAngle = Math.toDegrees(Math.atan2(length/2.0 - centerY, -width/2.0 - centerX)) - 90.0;
+			rlAngle = Math.toDegrees(Math.atan2(-length/2.0-centerY, -width/2.0-centerX)) - 90.0;
+			frAngle = Math.toDegrees(Math.atan2(length/2.0-centerY, width/2.0-centerX)) - 90.0;
+			rrAngle = Math.toDegrees(Math.atan2(-length/2.0-centerY, width/2.0-centerX)) - 90.0;
+		} else {
+			flAngle = Math.toDegrees(Math.atan2(length/2.0 - centerY, -width/2.0 - centerX)) + 90.0;
+			rlAngle = Math.toDegrees(Math.atan2(-length/2.0-centerY, -width/2.0-centerX)) + 90.0;
+			frAngle = Math.toDegrees(Math.atan2(length/2.0-centerY, width/2.0-centerX)) + 90.0;
+			rrAngle = Math.toDegrees(Math.atan2(-length/2.0-centerY, width/2.0-centerX)) + 90.0;
+		}
+		if (flAngle > 180) flAngle -= 360;
+		if (rlAngle > 180) rlAngle -= 360;
+		if (frAngle > 180) frAngle -= 360;
+		if (rrAngle > 180) rrAngle -= 360;
+		
+		if (flAngle < -180) flAngle += 360;
+		if (rlAngle < -180) rlAngle += 360;
+		if (frAngle < -180) frAngle += 360;
+		if (rrAngle < -180) rrAngle += 360;
+		
+		double flMag, rlMag, frMag, rrMag, maxMag = 0.0;
+		frMag = Math.sqrt(Math.pow(length/2.0-centerY, 2) + Math.pow(width/2.0-centerX, 2));
+		maxMag = frMag;
+		flMag = Math.sqrt(Math.pow(length/2.0-centerY,2) + Math.pow(-width/2.0-centerX, 2));
+		if (flMag > maxMag) maxMag = flMag;
+		rrMag = Math.sqrt(Math.pow(-length/2.0-centerY, 2) + Math.pow(width/2.0-centerX, 2));
+		if (rrMag > maxMag) maxMag = rrMag;
+		rlMag = Math.sqrt(Math.pow(-length/2.0-centerY, 2) + Math.pow(-width/2.0-centerX,2));
+		if (rlMag > maxMag) maxMag = rlMag;
 
+		frMag = frMag / maxMag * Math.abs(velocity);
+		flMag = flMag / maxMag * Math.abs(velocity);
+		rrMag = rrMag / maxMag * Math.abs(velocity);
+		rlMag = rlMag / maxMag * Math.abs(velocity);
+		
+		applyWheelVector(flAngle, flMag, 0);
+		applyWheelVector(rlAngle, rlMag, 1);
+		applyWheelVector(frAngle, frMag, 2);
+		applyWheelVector(rrAngle, rrMag, 3);
+		
+	}
+	private void applyWheelVector(double angle, double magnitude, int wheel) {
+		double currentWheelAngle = 0.0;
+		switch (wheel) {
+		case 0:
+			currentWheelAngle = findEncAng(encFL.getDistance());
+			break;
+		case 1:
+			currentWheelAngle = findEncAng(encRL.getDistance());
+			break;
+		case 2:
+			currentWheelAngle = findEncAng(encFR.getDistance());
+			break;
+		case 3:
+			currentWheelAngle = findEncAng(encRR.getDistance());
+			break;
+		default:
+			break;
+		}
+		if (goToAngle(angle, currentWheelAngle)) {
+
+		} else {
+			angle += 180;
+			if (angle > 180) {
+				angle -= 360;
+			}
+			magnitude = -magnitude;
+		}
+		if (angle < -180) {
+			angle += 360;
+		}
+		switch(wheel) {
+		case 0:
+			pidFL.setSetpoint(angle);
+			transFL.set(magnitude);
+			break;
+		case 1:
+			pidRL.setSetpoint(angle);
+			transRL.set(magnitude);
+			break;
+		case 2:
+			pidFR.setSetpoint(angle);
+			transFR.set(magnitude);
+			break;
+		case 3:
+			pidRR.setSetpoint(angle);
+			transRR.set(magnitude);
+			break;
+		default:
+			break;
+		}
+	}
+	
 	/**
 	 * Used to update move and rotate values for serve drive. Should be
 	 * constantly updated unless values are set to 0
@@ -638,12 +740,18 @@ public class SwerveDrive {
 		switch(motor.value) {
 		case 0:
 			encFL.reset();
+			break;
 		case 1:
 			encRL.reset();
+			break;
 		case 2:
 			encFR.reset();
+			break;
 		case 3:
 			encRR.reset();
+			break;
+		default:
+			break;
 		}
 	}
 
