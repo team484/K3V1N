@@ -12,7 +12,7 @@ public class VisionThread extends Thread {
 	private String networkTableName; //Name of table with vision data
 	private CameraSettings camSettings; //Camera Settings
 	private Camera cam; //Which camera this thread is responsible for
-	private enum Camera {
+	public enum Camera {
 		SHOOTER,
 		GEAR
 	}

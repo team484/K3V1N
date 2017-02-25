@@ -39,7 +39,7 @@ public class DriveTrain extends Subsystem {
     	Robot.swerve.drive(rotation, fixedMag, fixedTwist);
     	*/
     	
-    	Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees(), Robot.io.driveStick.getMagnitude(), -Math.pow(Robot.io.driveStick.getTwist(), 3)/ Math.abs(Robot.io.driveStick.getTwist()));
+    	Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees(), Math.pow(Robot.io.driveStick.getMagnitude(),2) * Math.signum(Robot.io.driveStick.getMagnitude()), -Math.pow(Robot.io.driveStick.getTwist(), 3)/ Math.abs(Robot.io.driveStick.getTwist()));
     	
     }
     

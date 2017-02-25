@@ -15,6 +15,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import vision.CameraSettings;
+import vision.VisionResults;
+import vision.VisionThread;
 
 
 
@@ -26,7 +29,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory. 
  */
 public class Robot extends IterativeRobot {
-
+	public static CameraSettings gearCamSettings;
+	public static CameraSettings shooterCamSettings;
+	public static VisionThread gearVisionThread;
+	public static VisionThread shooterVisionThread;
 
 	public static OI oi;
 	public static RobotIO io;
@@ -82,6 +88,10 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putData("Auto mode", chooser);
 
+		gearCamSettings = new CameraSettings(1920, 1080, 0, 0, 0, 0, 0, 0.00194);
+		shooterCamSettings = new CameraSettings(1920, 1080, 0, 0, 0, 0, 0, 0.00109);
+		gearVisionThread = new VisionThread(VisionThread.Camera.GEAR, gearCamSettings, "gear");
+		gearVisionThread.start();
 	}
 
 	@Override
@@ -146,6 +156,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		VisionResults gearResults = gearVisionThread.getResults();
+		System.out.println("distance: " + gearResults.inchesZ + " offset: " + gearResults.inchesX);
 	}
 
 	/**

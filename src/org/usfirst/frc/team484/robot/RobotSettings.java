@@ -3,7 +3,9 @@ package org.usfirst.frc.team484.robot;
 import vision.CameraSettings;
 
 public class RobotSettings {
-
+	public static boolean isBackupBot = true;
+	
+	
 	public static double kP = 0.02;
 	public static double kI = 0.0;
 	public static double kD = 0.0;
