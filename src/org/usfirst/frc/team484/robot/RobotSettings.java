@@ -3,7 +3,7 @@ package org.usfirst.frc.team484.robot;
 import vision.CameraSettings;
 
 public class RobotSettings {
-	public static boolean isBackupBot = true;
+	public static boolean isBackupBot = false;
 	
 	
 	public static double kP = 0.02;
@@ -19,14 +19,10 @@ public class RobotSettings {
 	public static double rotateKP = 0.02;
 	public static double rotateKI = 0.0;
 	public static double rotateKD = 0.0;
-	
-	public static double visionRotKP;
-	public static double visionRotKI;
-	public static double visionRotKD;
 
-	public static double visionTransKP = .0001;
-	public static double visionTransKI = 0.0;
-	public static double visionTransKD = .001;
+	public static double visionTransKP = 0.0001;
+	public static double visionTransKI = 0.0001;
+	public static double visionTransKD = 0.001;
 
 	public static double visionErrThreshold = 100.0;
 	
@@ -56,7 +52,6 @@ public class RobotSettings {
 	
 	public static final String iTable = "GRIP/vision";
 	
-	public static CameraSettings camSettings = new CameraSettings((int)cameraWidth, (int)cameraHeight, 0.0, 8.5, 0.0, 0.0, 0.0, Math.toRadians(degPerPix));
 	
 } 
 

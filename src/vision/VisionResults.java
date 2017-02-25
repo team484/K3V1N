@@ -2,7 +2,7 @@ package vision;
 
 //Object that stores results of the vision calculations
 public class VisionResults {
-	public double relativeAngleX, relativeAngleY, inchesX, inchesY, inchesZ, targetRotation;
+	public double relativeAngleX, relativeAngleY, inchesX, inchesY, inchesZ, targetRotation = Double.NaN;
 	public boolean targetFound = false;
 	
 	//Initialized this way when target was found

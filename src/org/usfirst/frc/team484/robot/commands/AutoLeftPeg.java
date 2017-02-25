@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoSidePeg extends CommandGroup {
+public class AutoLeftPeg extends CommandGroup {
 
-    public AutoSidePeg() {
+    public AutoLeftPeg() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -24,5 +24,9 @@ public class AutoSidePeg extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	addSequential(new AutoDriveAngle(0, .4), 3);
+    	addSequential(new AutoRotate(30));
+    	addSequential(new AutoCenterRobot());
+    	addSequential(new AutoDriveAngle(0, .3));
     }
 }

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
@@ -50,6 +51,7 @@ public class RobotIO {
 	public Joystick driveStick;
 	public Joystick operatorStick;
 
+	public PowerDistributionPanel pdp;
 
 	public NetworkTable itab = NetworkTable.getTable(RobotSettings.iTable);
 
@@ -58,13 +60,13 @@ public class RobotIO {
 	public RobotIO() {
 		if (RobotSettings.isBackupBot) {
 			frontLeftTransMotor = new Talon(0);
-			frontRightTransMotor =  new Talon(1);
-			rearLeftTransMotor =  new Talon(2);
+			frontRightTransMotor =  new Talon(2);
+			rearLeftTransMotor =  new Talon(1);
 			rearRightTransMotor =  new Talon(3);
 
 			frontLeftRotationalMotor =  new Talon(4);
-			frontRightRotationalMotor = new Talon(5);
-			rearLeftRotationalMotor = new Talon(6);
+			frontRightRotationalMotor = new Talon(6);
+			rearLeftRotationalMotor = new Talon(5);
 			rearRightRotationalMotor = new Talon(7);
 			shooterMotor = new Talon(8);
 			
@@ -102,7 +104,8 @@ public class RobotIO {
 		shooterEnc = new Encoder(RobotMap.shooterEncA, RobotMap.shooterEncB);
 		shooterEnc.setSamplesToAverage(4);
 
-
+		pdp = new PowerDistributionPanel();
+		
 		//public static NetworkTable visionTable = NetworkTable.getTable("grip");
 		infraredSensor = new AnalogInput(RobotMap.infraredSensor);
 		topGyro = new AnalogGyro(RobotMap.topGyro);

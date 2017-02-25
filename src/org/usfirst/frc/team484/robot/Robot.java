@@ -33,7 +33,8 @@ public class Robot extends IterativeRobot {
 	public static CameraSettings shooterCamSettings;
 	public static VisionThread gearVisionThread;
 	public static VisionThread shooterVisionThread;
-
+	public static VisionResults gearResults;
+	
 	public static OI oi;
 	public static RobotIO io;
 
@@ -156,8 +157,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		VisionResults gearResults = gearVisionThread.getResults();
+		gearResults = gearVisionThread.getResults();
 		System.out.println("distance: " + gearResults.inchesZ + " offset: " + gearResults.inchesX);
+		
+		SmartDashboard.putNumber("gyro", (io.topGyro.getAngle() - io.bottomGyro.getAngle()) / 2);
+		SmartDashboard.putNumber("voltage", io.pdp.getVoltage());
 	}
 
 	/**
