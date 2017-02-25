@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot {
 		climber = new Climber();
 		agitator = new Agitator();
 		
-		cameraSwitcher = new CameraSwitch(io.driveStick);
+		//cameraSwitcher = new CameraSwitch(io.driveStick);
 
 		oi = new OI();
 		
@@ -146,7 +146,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		System.out.println(io.shooterEnc.getRate());
 	}
 
 	/**

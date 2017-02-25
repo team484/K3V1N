@@ -117,7 +117,7 @@ public class SwerveDrive {
 		encFR = iEncFR;
 		encRR = iEncRR;
 
-		setWheelbaseDimensions(27.0, 17.5);
+		setWheelbaseDimensions(25.75, 18.25);
 		
 		if (invertWheelRotation) {
 			pidFL = new PIDController(kP, kI, kD, new PIDSource() {

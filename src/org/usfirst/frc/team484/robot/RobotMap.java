@@ -57,7 +57,8 @@ public class RobotMap {
 	public static final String cam0 = "cam0";
 	public static final String cam1 = "cam3";
 	
-
+	public static final int shooterLED = 0;
+	public static final int pickupLED = 1;
 
 }
 

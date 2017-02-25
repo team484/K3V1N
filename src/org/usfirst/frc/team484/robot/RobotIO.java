@@ -1,6 +1,7 @@
 package org.usfirst.frc.team484.robot;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -30,7 +31,8 @@ public class RobotIO {
 	public VictorSP climbMotorB;
 	
 	public VictorSP agitateMotor;
-	public Relay led; 
+	public Relay shooterLED; 
+	public Relay pickupLED;
 
 	
 	public Encoder frontLeftEnc;
@@ -76,6 +78,10 @@ public class RobotIO {
 		rearLeftEnc = new Encoder(RobotMap.rearleftEncA, RobotMap.rearleftEncB);
 		rearRightEnc = new Encoder(RobotMap.rearRightEncA, RobotMap.rearRightEncB);
 		shooterEnc = new Encoder(RobotMap.shooterEncA, RobotMap.shooterEncB);
+		shooterEnc.setSamplesToAverage(4);
+		
+		shooterMotor.changeControlMode(TalonControlMode.Voltage);
+		shooterMotor.setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
 
 		//public static NetworkTable visionTable = NetworkTable.getTable("grip");
 		infraredSensor = new AnalogInput(RobotMap.infraredSensor);
@@ -84,7 +90,8 @@ public class RobotIO {
 
 		driveStick = new Joystick(RobotMap.driveStick);
 		operatorStick = new Joystick(RobotMap.operatorStick);
-		//led = new Relay(5);
+		shooterLED = new Relay(RobotMap.shooterLED);
+		pickupLED = new Relay(RobotMap.pickupLED);
 		
 
 	}

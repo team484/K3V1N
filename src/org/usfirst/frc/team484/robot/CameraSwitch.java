@@ -71,7 +71,7 @@ public class CameraSwitch {
 						try {
 							climberCam = new UsbCamera("cam1",0);
 							climberCam.setResolution(640, 480);
-						} catch (Exception e) {
+						} catch (Exception ex) {
 							System.err.println("Could not find climber camera!");
 						}
 					}

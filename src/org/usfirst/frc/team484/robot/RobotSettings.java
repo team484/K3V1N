@@ -8,10 +8,11 @@ public class RobotSettings {
 	public static double kI = 0.0;
 	public static double kD = 0.0;
 	
-	public static double shooterKP = 0.0005;
-	public static double shooterKI = 0.000;
-	public static double shooterKD = 0.0001;
-	public static double shooterKF = 3000.0;
+	public static double shooterKP = 0.3;
+	public static double shooterKI = 0.0;
+	public static double shooterKD = 0.0;
+	public static double shooterKF = 8.4;
+	public static double shooterWheelsVoltageRampRate = 24;
 	
 	public static double rotateKP = 0.02;
 	public static double rotateKI = 0.0;
@@ -34,7 +35,7 @@ public class RobotSettings {
 	public static double wheelBaseY = 17.5;
 	
 	public static double pickupSpeed = -1.0; //Between -1.0 and 1.0
-	public static double shooterSpeed = 65; //55
+	public static double shooterSpeed = 50; //55
 	public static double climberSpeed = 1.0;
 	
 	public static double deadzone = .05;
