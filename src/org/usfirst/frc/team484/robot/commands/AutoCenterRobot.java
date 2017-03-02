@@ -62,7 +62,7 @@ public class AutoCenterRobot extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return GearCalculator.run(Contour.getContoursFromTable(Robot.io.itab), RobotSettings.camSettings).inchesX < RobotSettings.errThresh && GearCalculator.run(Contour.getContoursFromTable(Robot.io.itab), RobotSettings.camSettings).inchesX > -RobotSettings.errThresh;
+    	return false;
     }
     protected void end() {
     	Robot.driveTrain.doNothing();

@@ -83,9 +83,9 @@ public class Robot extends IterativeRobot {
 		swerve.setWheelbaseDimensions(RobotSettings.wheelBaseX, RobotSettings.wheelBaseY);
 
 		io.topGyro.initGyro();
-		io.topGyro.calibrate();
+		//io.topGyro.calibrate();
 		io.bottomGyro.initGyro();
-		io.bottomGyro.calibrate();
+		//io.bottomGyro.calibrate();
 		
 		SmartDashboard.putData("Auto mode", chooser);
 
@@ -154,13 +154,14 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during operator control
 	 */
+	private int i = 0;
 	@Override
 	public void teleopPeriodic() {
+		i += 1;
 		Scheduler.getInstance().run();
 		gearResults = gearVisionThread.getResults();
 		System.out.println("distance: " + gearResults.inchesZ + " offset: " + gearResults.inchesX);
-		
-		SmartDashboard.putNumber("gyro", (io.topGyro.getAngle() - io.bottomGyro.getAngle()) / 2);
+		SmartDashboard.putNumber("gyro", driveTrain.getRobotAngle());
 		SmartDashboard.putNumber("voltage", io.pdp.getVoltage());
 	}
 
