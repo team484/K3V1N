@@ -24,10 +24,9 @@ public class AutoGearPlace extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new AutoDriveIR(.50), 10);
+    	addSequential(new AutoDriveAngle(0, .3), 4);
     	addSequential(new AutoDoNothing(), 2);
-    	addSequential(new AutoDriveAngle(180, .3), 2);
-    	addSequential(new AutoDriveAngle(90, .4), 2.5);
-    	addSequential(new AutoDriveAngle(0, .4), 3);
+    	addSequential(new AutoCenterRobot(), 5);
+    	addSequential(new AutoDoNothing(), 2);
     }
 }

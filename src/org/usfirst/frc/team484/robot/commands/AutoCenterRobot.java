@@ -12,9 +12,8 @@ import vision.CameraSettings;
 import vision.Contour;
 import vision.calculators.GearCalculator;
 
-/**
- *TODO: How accurate is uing two gyros?
- *Can we replace a large portion of this code by using a gyro?
+/*
+ * 
  */
 public class AutoCenterRobot extends Command {
     
@@ -50,9 +49,7 @@ public class AutoCenterRobot extends Command {
     }
     // Called just before this Command runs the first time
     protected void initialize() {
-    	transPid.setSetpoint(0.0);
-    	//transPid.setSetpoint(0.0);
-    	
+    	transPid.setSetpoint(0.0);    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -62,7 +59,8 @@ public class AutoCenterRobot extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return false;
+    	if(Robot.gearResults.inchesX == Double.NaN) return false;
+    	else return RobotSettings.errThresh > Robot.gearResults.inchesX && Robot.gearResults.inchesX > -RobotSettings.errThresh;
     }
     protected void end() {
     	Robot.driveTrain.doNothing();

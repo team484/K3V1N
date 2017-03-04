@@ -1,6 +1,11 @@
 
 package org.usfirst.frc.team484.robot;
 
+import org.usfirst.frc.team484.robot.commands.AutoCrossLine;
+import org.usfirst.frc.team484.robot.commands.AutoDoNothing;
+import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
+import org.usfirst.frc.team484.robot.commands.AutoLeftPeg;
+import org.usfirst.frc.team484.robot.commands.AutoRightPeg;
 import org.usfirst.frc.team484.robot.commands.AutoVisionGear;
 import org.usfirst.frc.team484.robot.subsystems.Agitator;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
@@ -87,6 +92,11 @@ public class Robot extends IterativeRobot {
 		io.bottomGyro.initGyro();
 		//io.bottomGyro.calibrate();
 		
+		chooser.addDefault("DoNothing", new AutoDoNothing());
+		chooser.addObject("Cross Line", new AutoCrossLine());
+		chooser.addObject("RightGearPeg", new AutoRightPeg());
+		chooser.addObject("LeftGearPeg", new AutoLeftPeg());
+		chooser.addObject("CenterGearPeg", new AutoGearPlace());
 		SmartDashboard.putData("Auto mode", chooser);
 
 		gearCamSettings = new CameraSettings(1920, 1080, 0, 0, 0, 0, 0, 0.00194);

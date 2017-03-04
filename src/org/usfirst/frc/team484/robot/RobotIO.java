@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
@@ -68,7 +69,7 @@ public class RobotIO {
 			frontRightRotationalMotor = new Talon(6);
 			rearLeftRotationalMotor = new Talon(5);
 			rearRightRotationalMotor = new Talon(7);
-			shooterMotor = new Talon(8);
+			shooterMotor = new Spark(8);
 			
 			pickupMotor = new VictorSP(9);
 
