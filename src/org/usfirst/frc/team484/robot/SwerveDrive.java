@@ -1,6 +1,9 @@
 package org.usfirst.frc.team484.robot;
 
 
+import com.ctre.CANTalon;
+import com.ctre.CANTalon.TalonControlMode;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput; 
@@ -81,6 +84,9 @@ public class SwerveDrive {
 	private Encoder encFR;
 	private Encoder encRR;
 	
+	private boolean voltageCompensate = false;
+	private double maxVoltage = 12;
+	
 	/**
 	 * Constructor for the Swerve Drive class. requires setting values for the PID
 	 * loop used to rotate the swerve wheels to set angles, as well as passing through motor controllers for swerve drive
@@ -127,18 +133,20 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;
 				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotFL.set(-d);
+					if (voltageCompensate) {
+						rotFL.set(-d * maxVoltage);
+					} else {
+						rotFL.set(-d);
+					}
 				}
 			});
 			pidRL = new PIDController(kP, kI, kD, new PIDSource() {
@@ -148,17 +156,19 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotRL.set(-d);
+					if (voltageCompensate) {
+						rotRL.set(-d * maxVoltage);
+					} else {
+						rotRL.set(-d);
+					}
 				}
 			});
 			pidFR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -168,17 +178,19 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotFR.set(-d);
+					if (voltageCompensate) {
+						rotFR.set(-d * maxVoltage);
+					} else {
+						rotFR.set(-d);
+					}
 				}
 			});
 			pidRR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -188,17 +200,19 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotRR.set(-d);
+					if (voltageCompensate) {
+						rotRR.set(-d * maxVoltage);
+					} else {
+						rotRR.set(-d);
+					}
 				}
 			});
 		} else {
@@ -209,17 +223,19 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotFL.set(d);
+					if (voltageCompensate) {
+						rotFL.set(d * maxVoltage);
+					} else {
+						rotFL.set(d);
+					}
 				}
 			});
 			pidRL = new PIDController(kP, kI, kD, new PIDSource() {
@@ -229,17 +245,19 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotRL.set(d);
+					if (voltageCompensate) {
+						rotRL.set(d * maxVoltage);
+					} else {
+						rotRL.set(d);
+					}
 				}
 			});
 			pidFR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -249,17 +267,19 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotFR.set(d);
+					if (voltageCompensate) {
+						rotFR.set(d * maxVoltage);
+					} else {
+						rotFR.set(d);
+					}
 				}
 			});
 			pidRR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -269,17 +289,19 @@ public class SwerveDrive {
 
 				@Override
 				public void setPIDSourceType(PIDSourceType pidSource) {
-					// TODO Auto-generated method stub
 					
 				}
 
 				@Override
 				public PIDSourceType getPIDSourceType() {
-					// TODO Auto-generated method stub
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					rotRR.set(d);
+					if (voltageCompensate) {
+						rotRR.set(d * maxVoltage);
+					} else {
+						rotRR.set(d);
+					}
 				}
 			});
 		}
@@ -628,19 +650,35 @@ public class SwerveDrive {
 		switch(wheel) {
 		case 0:
 			pidFL.setSetpoint(angle);
-			transFL.set(magnitude);
+			if (voltageCompensate) {
+				transFL.set(magnitude * maxVoltage);
+			} else {
+				transFL.set(magnitude);
+			}
 			break;
 		case 1:
 			pidRL.setSetpoint(angle);
-			transRL.set(magnitude);
+			if (voltageCompensate) {
+				transRL.set(magnitude * maxVoltage);
+			} else {
+				transRL.set(magnitude);
+			}
 			break;
 		case 2:
 			pidFR.setSetpoint(angle);
-			transFR.set(magnitude);
+			if (voltageCompensate) {
+				transFR.set(magnitude * maxVoltage);
+			} else {
+				transFR.set(magnitude);
+			}
 			break;
 		case 3:
 			pidRR.setSetpoint(angle);
-			transRR.set(magnitude);
+			if (voltageCompensate) {
+				transRR.set(magnitude * maxVoltage);
+			} else {
+				transRR.set(magnitude);
+			}
 			break;
 		default:
 			break;
@@ -686,10 +724,17 @@ public class SwerveDrive {
 				divisor = Math.abs(rRWheelMag);
 			}
 		}
-		transFL.set(fLWheelMag /= divisor);
-		transRL.set(rLWheelMag /= divisor);
-		transFR.set(fRWheelMag /= divisor);
-		transRR.set(rRWheelMag /= divisor);
+		if (!voltageCompensate) {
+			transFL.set(fLWheelMag /= divisor);
+			transRL.set(rLWheelMag /= divisor);
+			transFR.set(fRWheelMag /= divisor);
+			transRR.set(rRWheelMag /= divisor);
+		} else {
+			transFL.set(maxVoltage * (fLWheelMag /= divisor));
+			transRL.set(maxVoltage * (rLWheelMag /= divisor));
+			transFR.set(maxVoltage * (fRWheelMag /= divisor));
+			transRR.set(maxVoltage * (rRWheelMag /= divisor));
+		}
 	}
 
 	/**
@@ -707,15 +752,47 @@ public class SwerveDrive {
 	 * Frees the speed controllers encoders and PID loops
 	 */
 	public void free() {
-		((PWM) transFL).free();
-		((PWM) transRL).free();
-		((PWM) transFR).free();
-		((PWM) transRR).free();
-
-		((PWM) rotFL).free();
-		((PWM) rotRL).free();
-		((PWM) rotFR).free();
-		((PWM) rotRR).free();
+		if (transFL instanceof PWM) {
+			((PWM) transFL).free();
+		} else {
+			((CANTalon) transFL).delete();
+		}
+		if (transRL instanceof PWM) {
+			((PWM) transRL).free();
+		} else {
+			((CANTalon) transRL).delete();
+		}
+		if (transFR instanceof PWM) {
+			((PWM) transFR).free();
+		} else {
+			((CANTalon) transFR).delete();
+		}
+		if (transRR instanceof PWM) {
+			((PWM) transRR).free();
+		} else {
+			((CANTalon) transRR).delete();
+		}
+		
+		if (rotFL instanceof PWM) {
+			((PWM) rotFL).free();
+		} else {
+			((CANTalon) rotFL).delete();
+		}
+		if (rotRL instanceof PWM) {
+			((PWM) rotRL).free();
+		} else {
+			((CANTalon) rotRL).delete();
+		}
+		if (rotFR instanceof PWM) {
+			((PWM) rotFR).free();
+		} else {
+			((CANTalon) rotFR).delete();
+		}
+		if (rotRR instanceof PWM) {
+			((PWM) rotRR).free();
+		} else {
+			((CANTalon) rotRR).delete();
+		}
 
 		encFL.free();
 		encRL.free();
@@ -789,5 +866,38 @@ public class SwerveDrive {
 		pidRL.enable();
 		pidFR.enable();
 		pidRR.enable();
+	}
+	
+	public void toggleVoltageCompensation(boolean toggle, double maxVoltage) {
+		voltageCompensate = toggle;
+		this.maxVoltage = maxVoltage;
+		
+		if (voltageCompensate) {
+			((CANTalon) transFL).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) transFL).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+			((CANTalon) transRL).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) transRL).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+			((CANTalon) transFR).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) transFR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+			((CANTalon) transRR).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) transRR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+			((CANTalon) rotFL).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) rotFL).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+			((CANTalon)	rotRL).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) rotRL).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+			((CANTalon) rotFR).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) rotFR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+			((CANTalon) rotRR).changeControlMode(TalonControlMode.Voltage);
+			((CANTalon) rotRR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
+		} else {
+			((CANTalon) transFL).changeControlMode(TalonControlMode.Speed);
+			((CANTalon) transRL).changeControlMode(TalonControlMode.Speed);
+			((CANTalon) transFR).changeControlMode(TalonControlMode.Speed);
+			((CANTalon) transRR).changeControlMode(TalonControlMode.Speed);
+			((CANTalon) rotFL).changeControlMode(TalonControlMode.Speed);
+			((CANTalon) rotRL).changeControlMode(TalonControlMode.Speed);
+			((CANTalon) rotFR).changeControlMode(TalonControlMode.Speed);
+			((CANTalon) rotRR).changeControlMode(TalonControlMode.Speed);
+		}
 	}
 }
