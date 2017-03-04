@@ -103,6 +103,8 @@ public class Robot extends IterativeRobot {
 		shooterCamSettings = new CameraSettings(1920, 1080, 0, 0, 0, 0, 0, 0.00109);
 		gearVisionThread = new VisionThread(VisionThread.Camera.GEAR, gearCamSettings, "gear");
 		gearVisionThread.start();
+		
+		swerve.toggleVoltageCompensation(true, 12);
 	}
 
 	@Override
@@ -138,6 +140,7 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
+		swerve.toggleVoltageCompensation(true, 9);
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -158,6 +161,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null) autonomousCommand.cancel();
 		//swerve.enablePID();
+		swerve.toggleVoltageCompensation(true, 12);
 
 	}
 
