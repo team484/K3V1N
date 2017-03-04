@@ -99,7 +99,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("CenterGearPeg", new AutoGearPlace());
 		SmartDashboard.putData("Auto mode", chooser);
 
-		gearCamSettings = new CameraSettings(1920, 1080, 0, 0, 0, 0, 0, 0.00194);
+		gearCamSettings = new CameraSettings(960/3, 540/2, 0, 0, 0, 0, 0, 0.00384);
 		shooterCamSettings = new CameraSettings(1920, 1080, 0, 0, 0, 0, 0, 0.00109);
 		gearVisionThread = new VisionThread(VisionThread.Camera.GEAR, gearCamSettings, "gear");
 		gearVisionThread.start();
@@ -170,9 +170,11 @@ public class Robot extends IterativeRobot {
 		i += 1;
 		Scheduler.getInstance().run();
 		gearResults = gearVisionThread.getResults();
-		System.out.println("distance: " + gearResults.inchesZ + " offset: " + gearResults.inchesX);
 		SmartDashboard.putNumber("gyro", driveTrain.getRobotAngle());
 		SmartDashboard.putNumber("voltage", io.pdp.getVoltage());
+		gearResults = gearVisionThread.getResults();
+		SmartDashboard.putNumber("X-Offset", gearResults.inchesX);
+		SmartDashboard.putNumber("Distance", gearResults.inchesZ);
 	}
 
 	/**

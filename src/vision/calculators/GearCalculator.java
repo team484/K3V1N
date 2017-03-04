@@ -2,6 +2,7 @@ package vision.calculators;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import vision.CameraSettings;
 import vision.Contour;
 import vision.VisionResults;
@@ -16,11 +17,14 @@ public class GearCalculator {
 		distances.add(results[0]);
 		distances.add(distanceFromWidth(contours, camSettings));
 		distances.add(distanceFromSpacing(contours, camSettings));
+		SmartDashboard.putNumber("Distance1", distances.get(0));
+		SmartDashboard.putNumber("Distance2", distances.get(1));
+		SmartDashboard.putNumber("Distance3", distances.get(2));
 		distances.sort((c1, c2) -> (int)(c2 * 100000.0 - c1 * 100000.0));
 		
 		double medianDistance = distances.get(1);
 		double angleX = offsetXAngleFromCenters(contours, camSettings);
-		double offsetX = Math.tan(angleX) * medianDistance;
+		double offsetX = Math.tan(angleX / 2.0) * medianDistance * 2.0;
 		//TODO: Properly look at different distance values to error correct
 		
 		return new VisionResults(angleX + camSettings.angleX, 0, offsetX + camSettings.posX, 0, medianDistance + camSettings.posY, results[1]);
@@ -35,11 +39,11 @@ public class GearCalculator {
 
 		double height = leftCntr.height;
 		double angle = camSettings.radPerPixel * height;
-		results[0] = TAPE_HEIGHT / (2.0 * Math.tan(angle/2.0));
+		results[0] = 0.5 * TAPE_HEIGHT / (2.0 * Math.tan(angle/2.0));
 		
 		height = rightCntr.height;
 		angle = camSettings.radPerPixel * height;
-		results[1] = TAPE_HEIGHT / (2.0 * Math.tan(angle/2.0));
+		results[1] = 0.5 * TAPE_HEIGHT / (2.0 * Math.tan(angle/2.0));
 		
 		double width = Math.abs(contours.get(0).centerX - contours.get(1).centerX);
 		angle = camSettings.radPerPixel * width;
@@ -57,7 +61,13 @@ public class GearCalculator {
 		angles.add(targetAngleLOC2);
 		angles.sort((c1, c2) -> (int)(c2 * 100000.0 - c1 * 100000.0));
 		double medianAngle = (angles.get(1) + angles.get(2))/2.0; //Might be better to get the 3rd smallest angle instead of the median
-		return new double[] {(results[0] + results[1]) / 2.0, medianAngle};
+		double result;
+		if (results[0] < results[1]) {
+			result = results[0];
+		} else {
+			result = results[1];
+		}
+		return new double[] {result, medianAngle};
 	}
 	
 	//Calculates distance to target based on the width of the tape
@@ -67,7 +77,7 @@ public class GearCalculator {
 		for (int i = 0; i < 2; i++) {
 			double width = contours.get(i).width;
 			double angle = camSettings.radPerPixel * width;
-			results[i] = TAPE_WIDTH / (2.0 * Math.tan(angle/2.0));
+			results[i] = 0.5 * TAPE_WIDTH / (2.0 * Math.tan(angle/2.0));
 		}
 		return (results[0] + results[1]) / 2.0;
 	}
@@ -77,7 +87,7 @@ public class GearCalculator {
 		
 			double width = Math.abs(contours.get(0).centerX - contours.get(1).centerX);
 			double angle = camSettings.radPerPixel * width;
-			return TAPE_SPACING / (2.0 * Math.tan(angle/2.0));
+			return 0.5 * TAPE_SPACING / (2.0 * Math.tan(angle/2.0));
 
 	}
 	

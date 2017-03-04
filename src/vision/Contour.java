@@ -28,8 +28,7 @@ public class Contour {
         double[] solidity = table.getNumberArray("solidity", new double[0]);
         
         ArrayList<Contour> contours = new ArrayList<>();
-        
-        for(int i = 0; i < centerX.length; i++)
+        for(int i = 0; i < centerX.length && i < centerY.length && i < area.length && i < width.length && i < height.length && i <solidity.length; i++)
             contours.add(new Contour(centerX[i], centerY[i], area[i], width[i], height[i], solidity[i]));
         
         return contours;
