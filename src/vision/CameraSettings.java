@@ -8,8 +8,8 @@ public class CameraSettings {
 		this.width = width; //Width of camera image
 		this.height = height; //Height of camera image
 		this.posX = posX; //Offset of camera from the center of the x-axis of the robot
-		this.posY = posY; //Offset of camera from the front of the robot along y-axis
-		this.posZ = posZ; //Height of camera from the ground
+		this.posY = posY; //Height of camera from the ground
+		this.posZ = posZ; //Offset of camera from the front of the robot along y-axis
 		this.angleX = angleX; //Direction camera points in x-y (horizontal) plane
 		this.angleY = angleY; //Direction camera points in y-z (vertical) plane
 		this.radPerPixel = radPerPixel; //The radians (angle) of each pixel in camera image

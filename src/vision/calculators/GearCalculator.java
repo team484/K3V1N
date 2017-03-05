@@ -27,7 +27,7 @@ public class GearCalculator {
 		double offsetX = Math.tan(angleX / 2.0) * medianDistance * 2.0;
 		//TODO: Properly look at different distance values to error correct
 		
-		return new VisionResults(angleX + camSettings.angleX, 0, offsetX + camSettings.posX, 0, medianDistance + camSettings.posY, results[1]);
+		return new VisionResults(angleX + camSettings.angleX, 0, offsetX + camSettings.posX, 0, medianDistance + camSettings.posZ, results[1]);
 	}
 	
 	//Calculates distance to target based on height of the tape
