@@ -1,7 +1,6 @@
 package org.usfirst.frc.team484.robot.subsystems;
 
 import org.usfirst.frc.team484.robot.Robot;
-import org.usfirst.frc.team484.robot.RobotSettings;
 import org.usfirst.frc.team484.robot.commands.DriveWithJoystick;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -59,6 +58,9 @@ public class DriveTrain extends Subsystem {
     }
     public void driveWithGyro() {
     	 Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees() + (startAngle - getRobotAngle()), Robot.io.driveStick.getMagnitude(), -Math.pow(Robot.io.driveStick.getTwist(), 3) / Math.abs(Robot.io.driveStick.getTwist()));
+    }
+    public void pointWheels(double angle) {
+    	Robot.swerve.pointAllWheels(angle);
     }
     public void setAngle(double ang) {
     	startAngle = ang;

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team484.robot;
 
-import vision.CameraSettings;
-
 public class RobotSettings {
 	public static boolean isBackupBot = true;
 	

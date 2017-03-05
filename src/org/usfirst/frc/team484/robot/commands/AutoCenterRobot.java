@@ -8,9 +8,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import vision.CameraSettings;
-import vision.Contour;
-import vision.calculators.GearCalculator;
 
 /*
  * 

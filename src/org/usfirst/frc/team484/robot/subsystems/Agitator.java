@@ -1,7 +1,6 @@
 package org.usfirst.frc.team484.robot.subsystems;
 
 import org.usfirst.frc.team484.robot.Robot;
-import org.usfirst.frc.team484.robot.commands.Agitate;
 import org.usfirst.frc.team484.robot.commands.AgitateDoNothing;
 
 import edu.wpi.first.wpilibj.command.Subsystem;

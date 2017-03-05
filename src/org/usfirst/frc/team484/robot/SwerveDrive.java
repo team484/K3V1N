@@ -808,6 +808,21 @@ public class SwerveDrive {
 		pidRR.disable();
 		pidRR.free();
 	}
+	
+	/**
+	 * Sets all wheels to point in a particular direction
+	 * @param angle
+	 */
+	public void pointAllWheels(double angle) {
+		pidFL.setSetpoint(angle);
+		pidRL.setSetpoint(angle);
+		pidFR.setSetpoint(angle);
+		pidRR.setSetpoint(angle);
+		transFL.set(0);
+		transRL.set(0);
+		transFR.set(0);
+		transRR.set(0);
+	}
 
 	/**
 	 * Resets an encoder's angle to 0

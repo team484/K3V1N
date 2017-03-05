@@ -14,7 +14,6 @@ import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -104,7 +103,9 @@ public class Robot extends IterativeRobot {
 		gearVisionThread = new VisionThread(VisionThread.Camera.GEAR, gearCamSettings, "gear");
 		gearVisionThread.start();
 		
-		swerve.toggleVoltageCompensation(true, 12);
+		if (!RobotSettings.isBackupBot) {
+			swerve.toggleVoltageCompensation(true, 12);
+		}
 	}
 
 	@Override
@@ -140,7 +141,9 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		swerve.toggleVoltageCompensation(true, 9);
+		if (!RobotSettings.isBackupBot) {
+			swerve.toggleVoltageCompensation(true, 9);
+		}
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}
@@ -160,18 +163,16 @@ public class Robot extends IterativeRobot {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		if (autonomousCommand != null) autonomousCommand.cancel();
-		//swerve.enablePID();
-		swerve.toggleVoltageCompensation(true, 12);
-
+		if (!RobotSettings.isBackupBot) {
+			swerve.toggleVoltageCompensation(true, 12);
+		}
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
-	private int i = 0;
 	@Override
 	public void teleopPeriodic() {
-		i += 1;
 		Scheduler.getInstance().run();
 		gearResults = gearVisionThread.getResults();
 		SmartDashboard.putNumber("gyro", driveTrain.getRobotAngle());

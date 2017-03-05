@@ -7,6 +7,7 @@ import vision.CameraSettings;
 import vision.Contour;
 import vision.VisionResults;
 
+@SuppressWarnings("unused")
 public class ShooterCalculator {
 	
 	private static final double TAPE_WIDTH = 15;
@@ -16,8 +17,8 @@ public class ShooterCalculator {
 	private static final double BOTTOM_TAPE_ELEVATION = 79;
 	public static VisionResults run(ArrayList<Contour> contours, CameraSettings camSettings) {
 		
-		double distanceTop = distanceOfTopTape(contours, camSettings);
-		double distanceBottom = distanceOfBottomTape(contours, camSettings);
+		double distanceTop = distanceOfTopTape(contours, camSettings) + camSettings.posZ;
+		double distanceBottom = distanceOfBottomTape(contours, camSettings) + camSettings.posZ;
 		
 		double offsetXTop = offsetXTopTape(contours, camSettings, distanceTop);
 		double offsetXBottom = offsetXBottomTape(contours, camSettings, distanceBottom);
