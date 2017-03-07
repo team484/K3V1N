@@ -1,6 +1,7 @@
 package org.usfirst.frc.team484.robot;
 
 import org.usfirst.frc.team484.robot.commands.Agitate;
+import org.usfirst.frc.team484.robot.commands.AutoRotate;
 import org.usfirst.frc.team484.robot.commands.DriveWithGyro;
 import org.usfirst.frc.team484.robot.commands.JoystickClimb;
 import org.usfirst.frc.team484.robot.commands.PIDShooter;
@@ -52,6 +53,7 @@ public class OI {
 	Button pickupButtonTwo = new JoystickButton(Robot.io.operatorStick, 5);
 	Button reverseButton = new JoystickButton(Robot.io.operatorStick, 3);
 	Button climbButton = new JoystickButton(Robot.io.operatorStick, 6);
+	Button rotateButton = new JoystickButton(Robot.io.driveStick, 11);
 	public OI(){
 		resetWheels.whileHeld(new ResetWheels());
 		gyroDrive.whileHeld(new DriveWithGyro());
@@ -61,6 +63,7 @@ public class OI {
 		pickupButtonTwo.whileHeld(new PickupBalls());
 		reverseButton.whileHeld(new ReversePickup());
 		climbButton.whileHeld(new JoystickClimb());
+		rotateButton.whileHeld(new AutoRotate(90));
 	}
 	
 }

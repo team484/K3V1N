@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team484.robot;
 
+import org.opencv.core.Mat;
 import org.usfirst.frc.team484.robot.commands.AutoCrossLine;
 import org.usfirst.frc.team484.robot.commands.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
@@ -13,6 +14,10 @@ import org.usfirst.frc.team484.robot.subsystems.BallShooter;
 import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,7 +43,7 @@ public class Robot extends IterativeRobot {
 	public static VisionThread gearVisionThread;
 	public static VisionThread shooterVisionThread;
 	public static VisionResults gearResults;
-	
+
 	public static OI oi;
 	public static RobotIO io;
 
@@ -48,9 +53,8 @@ public class Robot extends IterativeRobot {
 	public static BallPickup ballPickup;
 	public static Climber climber;
 	public static Agitator agitator;
-	
-	public static CameraSwitch cameraSwitcher;
-	
+
+
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -67,11 +71,10 @@ public class Robot extends IterativeRobot {
 		ballPickup = new BallPickup();
 		climber = new Climber();
 		agitator = new Agitator();
-		
-		//cameraSwitcher = new CameraSwitch(io.driveStick);
+
 
 		oi = new OI();
-		
+
 		io.frontLeftEnc.reset();
 		io.rearLeftEnc.reset();
 		io.frontRightEnc.reset();
@@ -90,7 +93,7 @@ public class Robot extends IterativeRobot {
 		//io.topGyro.calibrate();
 		io.bottomGyro.initGyro();
 		//io.bottomGyro.calibrate();
-		
+
 		chooser.addDefault("DoNothing", new AutoDoNothing());
 		chooser.addObject("Cross Line", new AutoCrossLine());
 		chooser.addObject("RightGearPeg", new AutoRightPeg());
@@ -98,14 +101,64 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("CenterGearPeg", new AutoGearPlace());
 		SmartDashboard.putData("Auto mode", chooser);
 
-		gearCamSettings = new CameraSettings(960/3, 540/2, 0, 0, 0, 0, 0, 0.00384);
-		shooterCamSettings = new CameraSettings(1920, 1080, 0, 0, 0, 0, 0, 0.00109);
+		gearCamSettings = new CameraSettings(320, 240, 0, 0, 0, 0, 0, 0.00384);
+		shooterCamSettings = new CameraSettings(320, 240, 0, 0, 0, 0, 0, 0.00218);
 		gearVisionThread = new VisionThread(VisionThread.Camera.GEAR, gearCamSettings, "gear");
 		gearVisionThread.start();
-		
+		shooterVisionThread = new VisionThread(VisionThread.Camera.SHOOTER, shooterCamSettings, "shooter");
+		shooterVisionThread.start();
+
 		if (!RobotSettings.isBackupBot) {
 			swerve.toggleVoltageCompensation(true, 12);
 		}
+
+		Thread t = new Thread(() -> {
+			try {
+				boolean allowCam1 = true;
+				boolean allowCam2 = false;
+				UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture(1);
+				camera1.setResolution(320, 240);
+				camera1.setFPS(30);
+				camera1.setExposureAuto();
+				camera1.setWhiteBalanceAuto();
+				UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture(0);
+				camera2.setResolution(320, 240);
+				camera2.setFPS(30);
+				if (camera1.isConnected() && camera2.isConnected()) {
+					CvSink cvSink1 = CameraServer.getInstance().getVideo(camera1);
+					CvSink cvSink2 = CameraServer.getInstance().getVideo(camera2);
+					CvSource outputStream = CameraServer.getInstance().putVideo("Switcher", 320, 240);
+					Mat image = new Mat();
+
+					while (!Thread.interrupted()) {
+						if (Robot.io.driveStick.getRawButton(5)) {
+							allowCam1 = true;
+							allowCam2 = false;
+						}
+						if (Robot.io.driveStick.getRawButton(6)) {
+							allowCam2 = true;
+							allowCam1 = false;
+						}
+						if (allowCam1) {
+							cvSink2.setEnabled(false);
+							cvSink1.setEnabled(true);
+							cvSink1.grabFrame(image);
+						} else if (allowCam2) {
+							cvSink1.setEnabled(false);
+							cvSink2.setEnabled(true);
+							cvSink2.grabFrame(image);
+						}
+
+						outputStream.putFrame(image);
+
+					}
+				}
+			} catch (Exception e) {
+				System.err.println("Cameras not connected!");
+			}
+		});
+		t.start();
+
 	}
 
 	@Override

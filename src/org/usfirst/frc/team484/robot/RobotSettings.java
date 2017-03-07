@@ -1,10 +1,10 @@
 package org.usfirst.frc.team484.robot;
 
 public class RobotSettings {
-	public static boolean isBackupBot = true;
+	public static boolean isBackupBot = false;
 	
 	
-	public static double kP = 0.02;
+	public static double kP = 0.03;
 	public static double kI = 0.0;
 	public static double kD = 0.0;
 	
@@ -14,9 +14,9 @@ public class RobotSettings {
 	public static double shooterKF = 8.4;
 	public static double shooterWheelsVoltageRampRate = 24;
 	
-	public static double rotateKP = 0.02;
-	public static double rotateKI = 0.0;
-	public static double rotateKD = 0.0;
+	public static double rotateKP = 0.0085;
+	public static double rotateKI = 0.0001;
+	public static double rotateKD = 0.02;
 
 	public static double visionTransKP = 0.0001;
 	public static double visionTransKI = 0.0001;
@@ -31,7 +31,7 @@ public class RobotSettings {
 	public static double wheelBaseY = 17.5;
 	
 	public static double pickupSpeed = -1.0; //Between -1.0 and 1.0
-	public static double shooterSpeed = 50; //55
+	public static double shooterSpeed = 55; //55
 	public static double climberSpeed = 1.0;
 	
 	public static double deadzone = .05;

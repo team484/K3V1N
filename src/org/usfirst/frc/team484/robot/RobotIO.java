@@ -63,6 +63,10 @@ public class RobotIO {
 			frontRightTransMotor =  new Talon(2);
 			rearLeftTransMotor =  new Talon(1);
 			rearRightTransMotor =  new Talon(3);
+			frontLeftTransMotor.setInverted(false);
+			frontRightTransMotor.setInverted(false);
+			rearLeftTransMotor.setInverted(false);
+			rearRightTransMotor.setInverted(false);
 
 			frontLeftRotationalMotor =  new Talon(4);
 			frontRightRotationalMotor = new Talon(6);

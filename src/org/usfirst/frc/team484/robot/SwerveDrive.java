@@ -142,11 +142,7 @@ public class SwerveDrive {
 				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotFL.set(-d * maxVoltage);
-					} else {
 						rotFL.set(-d);
-					}
 				}
 			});
 			pidRL = new PIDController(kP, kI, kD, new PIDSource() {
@@ -164,11 +160,7 @@ public class SwerveDrive {
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotRL.set(-d * maxVoltage);
-					} else {
 						rotRL.set(-d);
-					}
 				}
 			});
 			pidFR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -186,11 +178,7 @@ public class SwerveDrive {
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotFR.set(-d * maxVoltage);
-					} else {
 						rotFR.set(-d);
-					}
 				}
 			});
 			pidRR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -208,11 +196,7 @@ public class SwerveDrive {
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotRR.set(-d * maxVoltage);
-					} else {
 						rotRR.set(-d);
-					}
 				}
 			});
 		} else {
@@ -231,11 +215,7 @@ public class SwerveDrive {
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotFL.set(d * maxVoltage);
-					} else {
 						rotFL.set(d);
-					}
 				}
 			});
 			pidRL = new PIDController(kP, kI, kD, new PIDSource() {
@@ -253,11 +233,7 @@ public class SwerveDrive {
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotRL.set(d * maxVoltage);
-					} else {
 						rotRL.set(d);
-					}
 				}
 			});
 			pidFR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -275,11 +251,7 @@ public class SwerveDrive {
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotFR.set(d * maxVoltage);
-					} else {
 						rotFR.set(d);
-					}
 				}
 			});
 			pidRR = new PIDController(kP, kI, kD, new PIDSource() {
@@ -297,11 +269,7 @@ public class SwerveDrive {
 					return PIDSourceType.kDisplacement;				}
 			}, new PIDOutput() {
 				public void pidWrite(double d) {
-					if (voltageCompensate) {
-						rotRR.set(d * maxVoltage);
-					} else {
 						rotRR.set(d);
-					}
 				}
 			});
 		}
@@ -896,23 +864,11 @@ public class SwerveDrive {
 			((CANTalon) transFR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
 			((CANTalon) transRR).changeControlMode(TalonControlMode.Voltage);
 			((CANTalon) transRR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
-			((CANTalon) rotFL).changeControlMode(TalonControlMode.Voltage);
-			((CANTalon) rotFL).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
-			((CANTalon)	rotRL).changeControlMode(TalonControlMode.Voltage);
-			((CANTalon) rotRL).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
-			((CANTalon) rotFR).changeControlMode(TalonControlMode.Voltage);
-			((CANTalon) rotFR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
-			((CANTalon) rotRR).changeControlMode(TalonControlMode.Voltage);
-			((CANTalon) rotRR).setVoltageRampRate(RobotSettings.shooterWheelsVoltageRampRate);
 		} else {
 			((CANTalon) transFL).changeControlMode(TalonControlMode.Speed);
 			((CANTalon) transRL).changeControlMode(TalonControlMode.Speed);
 			((CANTalon) transFR).changeControlMode(TalonControlMode.Speed);
 			((CANTalon) transRR).changeControlMode(TalonControlMode.Speed);
-			((CANTalon) rotFL).changeControlMode(TalonControlMode.Speed);
-			((CANTalon) rotRL).changeControlMode(TalonControlMode.Speed);
-			((CANTalon) rotFR).changeControlMode(TalonControlMode.Speed);
-			((CANTalon) rotRR).changeControlMode(TalonControlMode.Speed);
 		}
 	}
 }

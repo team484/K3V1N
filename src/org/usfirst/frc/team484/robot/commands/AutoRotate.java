@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -18,7 +19,7 @@ public class AutoRotate extends Command {
     public AutoRotate(double ang) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	ang = this.ang;
+    	this.ang = ang;
     	requires(Robot.driveTrain);
     	pid = new PIDController(RobotSettings.rotateKP, RobotSettings.rotateKI, RobotSettings.rotateKD, new PIDSource() {
 			
@@ -31,6 +32,7 @@ public class AutoRotate extends Command {
 			@Override
 			public double pidGet() {
 				// TODO Auto-generated method stub
+				SmartDashboard.putNumber("value", Robot.driveTrain.getRobotAngle());
 				return Robot.driveTrain.getRobotAngle();
 			}
 			
@@ -44,7 +46,8 @@ public class AutoRotate extends Command {
 			@Override
 			public void pidWrite(double output) {
 				// TODO Auto-generated method stub
-				Robot.driveTrain.driveWithValues(0.0, 0.0, output);
+				Robot.driveTrain.driveWithValues(0.0, 0.0, -output);
+				SmartDashboard.putNumber("Write", output);
 				
 			}
 		});
@@ -53,6 +56,8 @@ public class AutoRotate extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.io.bottomGyro.reset();
+    	Robot.io.topGyro.reset();
     	pid.reset();
     	pid.setSetpoint(ang);
     	pid.enable();
@@ -70,10 +75,12 @@ public class AutoRotate extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	pid.disable();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

@@ -24,7 +24,8 @@ public class AutoGearPlace extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new AutoDriveAngle(0, .3), 4);
+    	System.out.println("This Command is running");
+    	addSequential(new AutoDriveAngle(270, .3), 4);
     	addSequential(new AutoDoNothing(), 2);
     	addSequential(new AutoCenterRobot(), 5);
     	addSequential(new AutoDoNothing(), 2);
