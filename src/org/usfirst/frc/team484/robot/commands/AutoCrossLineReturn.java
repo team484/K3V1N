@@ -17,20 +17,30 @@ public class AutoCrossLineReturn extends CommandGroup {
     	
     	switch(path) {
     	case RIGHT:
+    		addSequential(new PointWheels(0));
     		addSequential(new AutoDriveAngle(0, SPEED), 2);
+    		addSequential(new PointWheels(90));
     		addSequential(new AutoDriveAngle(90, SPEED), 2);
+    		addSequential(new PointWheels(0));
     		addSequential(new AutoDriveAngle(0, SPEED), 4);
+    		addSequential(new PointWheels(180));
     		addSequential(new AutoDriveAngle(0, -SPEED), 2);
     		// TODO: Line up with peg?
     		break;
     	case LEFT:
+    		addSequential(new PointWheels(0));
     		addSequential(new AutoDriveAngle(0, SPEED), 2);
+    		addSequential(new PointWheels(270));
     		addSequential(new AutoDriveAngle(90, -SPEED), 2);
+    		addSequential(new PointWheels(0));
     		addSequential(new AutoDriveAngle(0, SPEED), 4);
+    		addSequential(new PointWheels(180));
     		addSequential(new AutoDriveAngle(0, -SPEED), 2);
     		break;
     	case FORWARDS:
+    		addSequential(new PointWheels(0));
     		addSequential(new AutoDriveAngle(0, SPEED), 4);
+    		addSequential(new PointWheels(180));
     		addSequential(new AutoDriveAngle(0, SPEED), 2);
     		break;
     	}

@@ -2,7 +2,6 @@
 package org.usfirst.frc.team484.robot;
 
 import org.opencv.core.Mat;
-import org.usfirst.frc.team484.robot.commands.AutoCrossLine;
 import org.usfirst.frc.team484.robot.commands.AutoCrossLineReturn;
 import org.usfirst.frc.team484.robot.commands.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
@@ -96,7 +95,6 @@ public class Robot extends IterativeRobot {
 		//io.bottomGyro.calibrate();
 
 		chooser.addDefault("DoNothing", new AutoDoNothing());
-		chooser.addObject("Cross Line", new AutoCrossLine());
 		chooser.addObject("RightGearPeg", new AutoRightPeg());
 		chooser.addObject("LeftGearPeg", new AutoLeftPeg());
 		chooser.addObject("CenterGearPeg", new AutoGearPlace());

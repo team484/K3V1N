@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoCenterRobot extends Command {
     
     PIDController transPid;
-    //private double lastX = 0.0;
  
 
     public AutoCenterRobot() {
@@ -38,7 +37,7 @@ public class AutoCenterRobot extends Command {
 			@Override
 			public void pidWrite(double output) {
 				// TODO Auto-generated method stub
-				Robot.driveTrain.driveWithValues(90.0, output, 0.0);
+				Robot.driveTrain.driveWithValues(0.0, output, 0.0);
 			}
 		});
         
