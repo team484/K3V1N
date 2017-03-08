@@ -3,6 +3,7 @@ package org.usfirst.frc.team484.robot;
 
 import org.opencv.core.Mat;
 import org.usfirst.frc.team484.robot.commands.AutoCrossLine;
+import org.usfirst.frc.team484.robot.commands.AutoCrossLineReturn;
 import org.usfirst.frc.team484.robot.commands.AutoDoNothing;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
 import org.usfirst.frc.team484.robot.commands.AutoLeftPeg;
@@ -99,6 +100,10 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("RightGearPeg", new AutoRightPeg());
 		chooser.addObject("LeftGearPeg", new AutoLeftPeg());
 		chooser.addObject("CenterGearPeg", new AutoGearPlace());
+		chooser.addObject("CrossBackRight", new AutoCrossLineReturn(AutoCrossLineReturn.PathType.RIGHT));
+		chooser.addObject("CrossBackLeft", new AutoCrossLineReturn(AutoCrossLineReturn.PathType.LEFT));
+		chooser.addObject("CrossBackForward", new AutoCrossLineReturn(AutoCrossLineReturn.PathType.FORWARDS));
+
 		SmartDashboard.putData("Auto mode", chooser);
 
 		gearCamSettings = new CameraSettings(320, 240, 0, 0, 0, 0, 0, 0.00384);

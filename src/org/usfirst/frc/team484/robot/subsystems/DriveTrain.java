@@ -12,11 +12,10 @@ public class DriveTrain extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	
-	//TODO: Add method to rotate wheels into a defensive position to avoid being pushed by enemy robots.
-	
+		
 	//private double prevTwist = 0.0;
 	private double startAngle = 0.0;
+	private double forwardAngle = 0.0;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -25,31 +24,18 @@ public class DriveTrain extends Subsystem {
     }
     
     public void driveWithJoystick() {
-    	/*
-    	double rotation = Robot.driveStick.getDirectionDegrees();
-    	double magnitude = Robot.driveStick.getMagnitude();
-    	double twist = -Math.pow(Robot.driveStick.getTwist(), 3) / Math.abs(Robot.driveStick.getTwist());
-    	
-    	// TODO: what is the domain of magnitude? Is it always > 0?
-    	double fixedMag = Math.abs(magnitude) > RobotSettings.EPSILON ? magnitude : 0.0;
-    	double fixedTwist = Math.abs(twist) > RobotSettings.EPSILON ? prevTwist = twist : prevTwist;
-    	
-    	
-    	Robot.swerve.drive(rotation, fixedMag, fixedTwist);
-    	*/
-    	
-    	Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees(), Math.pow(Robot.io.driveStick.getMagnitude(),2) * Math.signum(Robot.io.driveStick.getMagnitude()), 0.5 * -Math.pow(Robot.io.driveStick.getTwist(), 3)/ Math.abs(Robot.io.driveStick.getTwist()));
-    	
+    	double ang = Robot.io.driveStick.getDirectionDegrees();
+    	if(ang + forwardAngle >= 360){
+    		ang = (ang + forwardAngle) - Math.floor((forwardAngle + ang) % 360.0) * 360;
+    	}
+    	Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees() + forwardAngle, Math.pow(Robot.io.driveStick.getMagnitude(),2) * Math.signum(Robot.io.driveStick.getMagnitude()), 0.5 * -Math.pow(Robot.io.driveStick.getTwist(), 3)/ Math.abs(Robot.io.driveStick.getTwist()));
     }
-    
     public void doNothing(){
     	Robot.swerve.drive(0,0,0);
     }
-    
     public void driveWithValues(double deg, double mag, double rot){
     	Robot.swerve.drive(deg, mag, rot);
-    }
-    
+    } 
     public void resetMotors(){
     	Robot.swerve.setupWeels();
     }
@@ -65,6 +51,14 @@ public class DriveTrain extends Subsystem {
     public void setAngle(double ang) {
     	startAngle = ang;
     }
-    
+    public void driveArc(double centerX, double centerY, double velocity){
+    	Robot.swerve.driveRadially(centerX, centerY, velocity);
+    }
+    public void setFrontAngle(double ang) {
+    	forwardAngle = ang;
+    }
+    public double getFrontAngle() {
+    	return forwardAngle;
+    }
 }
 
