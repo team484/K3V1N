@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team484.robot;
 
+import java.util.ArrayList;
+
 import org.opencv.core.Mat;
 import org.usfirst.frc.team484.robot.commands.AutoCrossLineReturn;
 import org.usfirst.frc.team484.robot.commands.AutoDoNothing;
@@ -19,6 +21,7 @@ import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -54,7 +57,7 @@ public class Robot extends IterativeRobot {
 	public static Climber climber;
 	public static Agitator agitator;
 
-
+	public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -188,6 +191,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autonomousCommand = new AutoVisionGear();
+		SmartDashboard.putString("Robot Test", "Auto mode");
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -214,6 +218,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
+		SmartDashboard.putString("Robot Test", "Teleop-mode");
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -238,12 +243,246 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Distance", gearResults.inchesZ);
 	}
 
+	
+	
+	int testStage = 0;
+	int stageTimer = 0;
+	ArrayList<String> errors = new ArrayList<String>();
+	double startFL = 0;
+	double startRL = 0;
+	double startFR = 0;
+	double startRR = 0;
 	/**
 	 * This function is called periodically during test mode
 	 */
 	@Override
 	public void testPeriodic() {
 		LiveWindow.run();
+		switch (testStage) {
+		case 0:
+			SmartDashboard.putString("Robot Test", "Press trigger to begin");
+			if (io.driveStick.getTrigger()) {
+				testStage = 1;
+				stageTimer = 0;
+				errors.clear();
+			}
+			break;
+		case 1:
+			SmartDashboard.putString("Robot Test", "Checking Systems...");
+			if (stageTimer == 0) {
+				startFL = io.frontLeftEnc.getDistance();
+				startRL = io.rearLeftEnc.getDistance();
+				startFR = io.frontRightEnc.getDistance();
+				startRR = io.rearRightEnc.getDistance();
+			}
+			if (stageTimer < 50) {
+			io.frontLeftTransMotor.set(0.5);
+			io.rearLeftTransMotor.set(0.5);
+			io.frontRightTransMotor.set(0.5);
+			io.rearRightTransMotor.set(0.5);
+			io.frontLeftRotationalMotor.set(0.5);
+			io.rearLeftRotationalMotor.set(0.5);
+			io.frontRightRotationalMotor.set(0.5);
+			io.rearRightRotationalMotor.set(0.5);
+			io.shooterMotor.set(12);
+			io.climbMotorA.set(12);
+			io.climbMotorB.set(12);
+			io.pickupMotor.set(12);
+			io.agitateMotor.set(12);
+			}
+			stageTimer++;
+			if (stageTimer > 50) {
+				
+				double MIN_CURRENT = 4;
+				double MAX_CURRENT = 10;
+				double MINR_CURRENT = 4;
+				double MAXR_CURRENT = 10;
+				double flCurrent = pdp.getCurrent(1);
+				double rlCurrent = pdp.getCurrent(2);
+				double frCurrent = pdp.getCurrent(3);
+				double rrCurrent = pdp.getCurrent(4);
+				
+				double flRCurrent = pdp.getCurrent(5);
+				double rlRCurrent = pdp.getCurrent(6);
+				double frRCurrent = pdp.getCurrent(7);
+				double rrRCurrent = pdp.getCurrent(8);
+				
+				double shooterCurrent = pdp.getCurrent(9);
+				double MIN_Shooter_Current = 4;
+				double MAX_Shooter_Current = 10;
+				
+				double climberACurrent = pdp.getCurrent(10);
+				double climberBCurrent = pdp.getCurrent(11);
+				double MIN_CLIMBER_CURRENT = 4;
+				double MAX_CLIMBER_CURRENT = 10;
+				
+				double intakeCurrent = pdp.getCurrent(12);
+				double MIN_INTAKE_CURRENT = 4;
+				double MAX_INTAKE_CURRENT = 10;
+				
+				double agitateCurrent = pdp.getCurrent(13);
+				double MIN_AGITATE_CURRENT = 4;
+				double MAX_AGITATE_CURRENT = 10;
+				
+				if (flCurrent < MIN_CURRENT) {
+					errors.add("Front left CIM may not be plugged in");
+				} else if (flCurrent > MAX_CURRENT) {
+					errors.add("Front left CIM had trouble spinning");
+				}
+				if (rlCurrent < MIN_CURRENT) {
+					errors.add("Rear left CIM may not be plugged in");
+				} else if (rlCurrent > MAX_CURRENT) {
+					errors.add("Rear left CIM had trouble spinning");
+				}
+				if (frCurrent < MIN_CURRENT) {
+					errors.add("Front right CIM may not be plugged in");
+				} else if (frCurrent > MAX_CURRENT) {
+					errors.add("Front right CIM had trouble spinning");
+				}
+				if (rrCurrent < MIN_CURRENT) {
+					errors.add("Rear right CIM may not be plugged in");
+				} else if (rrCurrent > MAX_CURRENT) {
+					errors.add("Rear right CIM had trouble spinning");
+				}
+				
+				
+				if (flRCurrent < MINR_CURRENT) {
+					errors.add("Front left rotation motor may not be plugged in");
+				} else if (flCurrent > MAXR_CURRENT) {
+					errors.add("Front left rotation motor had trouble spinning");
+				} else if (Math.abs(startFL - io.frontLeftEnc.getDistance()) < 90) {
+					errors.add("Front left encoder is not working");
+				}
+				if (rlRCurrent < MINR_CURRENT) {
+					errors.add("Rear left rotation motor may not be plugged in");
+				} else if (rlCurrent > MAXR_CURRENT) {
+					errors.add("Rear left rotation motor had trouble spinning");
+				} else if (Math.abs(startRL - io.rearLeftEnc.getDistance()) < 90) {
+					errors.add("Rear left encoder is not working");
+				}
+				if (frRCurrent < MINR_CURRENT) {
+					errors.add("Front right rotation motor may not be plugged in");
+				} else if (frCurrent > MAXR_CURRENT) {
+					errors.add("Front right rotation motor had trouble spinning");
+				} else if (Math.abs(startFR - io.frontRightEnc.getDistance()) < 90) {
+					errors.add("Front right encoder is not working");
+				}
+				if (rrRCurrent < MINR_CURRENT) {
+					errors.add("Rear right rotation motor may not be plugged in");
+				} else if (rrCurrent > MAXR_CURRENT) {
+					errors.add("Rear right rotation motor had trouble spinning");
+				} else if (Math.abs(startRR - io.rearRightEnc.getDistance()) < 90) {
+					errors.add("Rear right encoder is not working");
+				}
+				
+				if (shooterCurrent < MIN_Shooter_Current) {
+					errors.add("Shooter motor may not be plugged in");
+				} else if (shooterCurrent > MAX_Shooter_Current) {
+					errors.add("Shooter motor had trouble spinning");
+				} else if (Math.abs(io.shooterEnc.getRate()) < 20) {
+					errors.add("Shooter encoder is not working");
+				}
+				
+				if (climberACurrent < MIN_CLIMBER_CURRENT) {
+					errors.add("Climber motor A may not be plugged in");
+				} else if (climberACurrent > MAX_CLIMBER_CURRENT) {
+					errors.add("Climber motor A had trouble spinning");
+				}
+				if (climberBCurrent < MIN_CLIMBER_CURRENT) {
+					errors.add("Climber motor B may not be plugged in");
+				} else if (climberBCurrent > MAX_CLIMBER_CURRENT) {
+					errors.add("Climber motor B had trouble spinning");
+				}
+				
+				if (intakeCurrent < MIN_INTAKE_CURRENT) {
+					errors.add("Intake motor may not be plugged in");
+				} else if (intakeCurrent > MAX_INTAKE_CURRENT) {
+					errors.add("Intake motor had trouble spinning");
+				}
+				
+				if (agitateCurrent < MIN_AGITATE_CURRENT) {
+					errors.add("Agitator motor may not be plugged in");
+				} else if (agitateCurrent > MAX_AGITATE_CURRENT) {
+					errors.add("Agitator motor had trouble spinning");
+				}
+				System.out.println("Problems: ");
+				if (errors.size() == 0) {
+					System.out.println("No problems found!");
+					SmartDashboard.putString("Robot Test", "No Problems Found");
+				} else if (errors.size() == 1) {
+					SmartDashboard.putString("Robot Test", errors.get(0));
+					System.err.println(errors.get(0));
+				} else {
+					SmartDashboard.putString("Robot Test", "There were " + errors.size() + " errors found. Check console for more");
+					for (String error : errors) {
+						System.err.println(error);
+					}
+				}
+				io.frontLeftTransMotor.set(0);
+				io.rearLeftTransMotor.set(0);
+				io.frontRightTransMotor.set(0);
+				io.rearRightTransMotor.set(0);
+				io.frontLeftRotationalMotor.set(0);
+				io.rearLeftRotationalMotor.set(0);
+				io.frontRightRotationalMotor.set(0);
+				io.rearRightRotationalMotor.set(0);
+				io.shooterMotor.set(0);
+				io.climbMotorA.set(0);
+				io.climbMotorB.set(0);
+				io.pickupMotor.set(0);
+				io.agitateMotor.set(0);
+				
+				if (errors.size() > 0) {
+					testStage = -1;
+				} else {
+					testStage = 2;
+				}
+				stageTimer = 0;
+			}
+			break;
+		case 2:
+			if (stageTimer == 0) {
+				io.topGyro.reset();
+				io.bottomGyro.reset();
+			}
+			stageTimer++;
+			SmartDashboard.putString("Robot Test", "Rotate robot, then press trigger");
+			if (io.driveStick.getTrigger() && stageTimer > 30) {
+				testStage = 3;
+				stageTimer = 0;
+			}
+			break;
+		case 3:
+			if (io.topGyro.getAngle() + io.bottomGyro.getAngle() < 10) {
+				if (Math.abs(io.topGyro.getAngle()) < 10) {
+					errors.add("Error in top gyro (port 0)");
+				}
+				if (Math.abs(io.bottomGyro.getAngle()) < 10) {
+					errors.add("Error in bottom gyro (port 1)");
+				}
+			} else {
+				if (Math.abs(io.topGyro.getAngle()) - Math.abs(io.bottomGyro.getAngle()) > 0) {
+					errors.add("Error in bottom gyro (port 1)");
+				} else {
+					errors.add("Error in top gyro (port 0)");
+				}
+			}
+			testStage = -1;
+			stageTimer = 0;
+			break;
+		case -1:
+			//Test over
+			break;
+		default:
+			break;
+		}
+		
+	}
+	
+	@Override
+	public void testInit() {
+		testStage = 0;
+		stageTimer = 0;
 	}
 }
 
