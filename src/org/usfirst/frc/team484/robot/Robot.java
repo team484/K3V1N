@@ -4,17 +4,22 @@ package org.usfirst.frc.team484.robot;
 import java.util.ArrayList;
 
 import org.opencv.core.Mat;
-import org.usfirst.frc.team484.robot.commands.AutoCrossLineReturn;
+import org.usfirst.frc.team484.robot.commands.AutoCrossBackForward;
+import org.usfirst.frc.team484.robot.commands.AutoCrossBackLeft;
+import org.usfirst.frc.team484.robot.commands.AutoCrossBackRight;
 import org.usfirst.frc.team484.robot.commands.AutoDoNothing;
+import org.usfirst.frc.team484.robot.commands.AutoDriveForTime;
+import org.usfirst.frc.team484.robot.commands.AutoDriveForwardIntoGear;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
 import org.usfirst.frc.team484.robot.commands.AutoLeftPeg;
 import org.usfirst.frc.team484.robot.commands.AutoRightPeg;
-import org.usfirst.frc.team484.robot.commands.AutoVisionGear;
 import org.usfirst.frc.team484.robot.subsystems.Agitator;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
 import org.usfirst.frc.team484.robot.subsystems.BallShooter;
 import org.usfirst.frc.team484.robot.subsystems.Climber;
 import org.usfirst.frc.team484.robot.subsystems.DriveTrain;
+
+import com.ctre.CANTalon;
 
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
@@ -101,9 +106,11 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("RightGearPeg", new AutoRightPeg());
 		chooser.addObject("LeftGearPeg", new AutoLeftPeg());
 		chooser.addObject("CenterGearPeg", new AutoGearPlace());
-		chooser.addObject("CrossBackRight", new AutoCrossLineReturn(AutoCrossLineReturn.PathType.RIGHT));
-		chooser.addObject("CrossBackLeft", new AutoCrossLineReturn(AutoCrossLineReturn.PathType.LEFT));
-		chooser.addObject("CrossBackForward", new AutoCrossLineReturn(AutoCrossLineReturn.PathType.FORWARDS));
+		chooser.addObject("CrossBackRight", new AutoCrossBackRight());
+		chooser.addObject("CrossBackLeft", new AutoCrossBackLeft());
+		chooser.addObject("CrossBackForward", new AutoCrossBackForward());
+		chooser.addObject("DeadReckonGear", new AutoDriveForwardIntoGear());
+		chooser.addObject("timeDrve", new AutoDriveForTime());
 
 		SmartDashboard.putData("Auto mode", chooser);
 
@@ -169,7 +176,16 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledInit() {
-
+		if (!RobotSettings.isBackupBot) {
+			((CANTalon) io.frontLeftRotationalMotor).enableBrakeMode(false);
+			((CANTalon) io.rearLeftRotationalMotor).enableBrakeMode(false);
+			((CANTalon) io.frontRightRotationalMotor).enableBrakeMode(false);
+			((CANTalon) io.rearRightRotationalMotor).enableBrakeMode(false);
+			((CANTalon) io.frontLeftTransMotor).enableBrakeMode(false);
+			((CANTalon) io.rearLeftTransMotor).enableBrakeMode(false);
+			((CANTalon) io.frontRightTransMotor).enableBrakeMode(false);
+			((CANTalon) io.rearRightTransMotor).enableBrakeMode(false);
+		}
 	}
 
 	@Override
@@ -190,7 +206,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = new AutoVisionGear();
+		if (!RobotSettings.isBackupBot) {
+			((CANTalon) io.frontLeftRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.rearLeftRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.frontRightRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.rearRightRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.frontLeftTransMotor).enableBrakeMode(true);
+			((CANTalon) io.rearLeftTransMotor).enableBrakeMode(true);
+			((CANTalon) io.frontRightTransMotor).enableBrakeMode(true);
+			((CANTalon) io.rearRightTransMotor).enableBrakeMode(true);
+		}
+		autonomousCommand = chooser.getSelected();
 		SmartDashboard.putString("Robot Test", "Auto mode");
 
 		/*
@@ -218,6 +244,16 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
+		if (!RobotSettings.isBackupBot) {
+			((CANTalon) io.frontLeftRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.rearLeftRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.frontRightRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.rearRightRotationalMotor).enableBrakeMode(true);
+			((CANTalon) io.frontLeftTransMotor).enableBrakeMode(true);
+			((CANTalon) io.rearLeftTransMotor).enableBrakeMode(true);
+			((CANTalon) io.frontRightTransMotor).enableBrakeMode(true);
+			((CANTalon) io.rearRightTransMotor).enableBrakeMode(true);
+		}
 		SmartDashboard.putString("Robot Test", "Teleop-mode");
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to

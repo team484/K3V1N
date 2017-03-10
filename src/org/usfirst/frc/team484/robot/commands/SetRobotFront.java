@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class SetRobotFront extends Command {
 	double ang;
+	boolean finished = false;
 	public enum Side {
 		FRONT,
 		RIGHT,
@@ -18,25 +19,25 @@ public class SetRobotFront extends Command {
     public SetRobotFront(double ang) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.driveTrain);
     	this.ang = ang;
     }
     public SetRobotFront(Side side){
-    	requires(Robot.driveTrain);
     	switch(side) {
     	case FRONT:
-    		this.ang = 0.0;
+    		ang = 0.0;
     		break;
     	case RIGHT:
-    		this.ang = 90.0;
+    		ang = 90.0;
     		break;
     	case LEFT:
-    		this.ang = 270.0;
+    		ang = 270.0;
     		break;
     	case REAR:
-    		this.ang = 180.0;
+    		ang = 180.0;
     		break;
     	}
+    	Robot.driveTrain.setFrontAngle(ang);
+    	finished = true;
     }
 
     // Called just before this Command runs the first time
@@ -45,12 +46,12 @@ public class SetRobotFront extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.setAngle(ang);
+    	Robot.driveTrain.setFrontAngle(ang);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return finished;
     }
 
     // Called once after isFinished returns true

@@ -635,17 +635,17 @@ public class SwerveDrive {
 		case 2:
 			pidFR.setSetpoint(angle);
 			if (voltageCompensate) {
-				transFR.set(magnitude * maxVoltage);
+				transFR.set(magnitude * maxVoltage * 1.2);
 			} else {
-				transFR.set(magnitude);
+				transFR.set(magnitude * 1.2);
 			}
 			break;
 		case 3:
 			pidRR.setSetpoint(angle);
 			if (voltageCompensate) {
-				transRR.set(magnitude * maxVoltage);
+				transRR.set(magnitude * maxVoltage * 1.2);
 			} else {
-				transRR.set(magnitude);
+				transRR.set(magnitude * 1.2);
 			}
 			break;
 		default:
@@ -695,13 +695,13 @@ public class SwerveDrive {
 		if (!voltageCompensate) {
 			transFL.set(fLWheelMag /= divisor);
 			transRL.set(rLWheelMag /= divisor);
-			transFR.set(fRWheelMag /= divisor);
-			transRR.set(rRWheelMag /= divisor);
+			transFR.set(1.2 * (fRWheelMag /= divisor));
+			transRR.set(1.2 * (rRWheelMag /= divisor));
 		} else {
 			transFL.set(maxVoltage * (fLWheelMag /= divisor));
 			transRL.set(maxVoltage * (rLWheelMag /= divisor));
-			transFR.set(maxVoltage * (fRWheelMag /= divisor));
-			transRR.set(maxVoltage * (rRWheelMag /= divisor));
+			transFR.set(1.2 * maxVoltage * (fRWheelMag /= divisor));
+			transRR.set(1.2 * maxVoltage * (rRWheelMag /= divisor));
 		}
 	}
 

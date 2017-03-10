@@ -45,7 +45,7 @@ public class AutoCenterRobot extends Command {
     }
     // Called just before this Command runs the first time
     protected void initialize() {
-    	transPid.setSetpoint(0.0);    	
+    	transPid.setSetpoint(0.0);
     }
 
     // Called repeatedly when this Command is scheduled to run

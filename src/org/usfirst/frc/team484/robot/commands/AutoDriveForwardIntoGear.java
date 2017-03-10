@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *  requires the robot to be lined up perfectly and
  *  for the wheels to spin at the same rate.
  */
-public class DriveForwardIntoGear extends CommandGroup {
+public class AutoDriveForwardIntoGear extends CommandGroup {
 
-    public DriveForwardIntoGear() {
+    public AutoDriveForwardIntoGear() {
     	
-		addSequential(new PointWheels(270.0));
+		addSequential(new PointWheels(270.0), 1);
 		addSequential(new AutoDriveAngle(270.0, .3));
     }
 }

@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoVisionGear extends CommandGroup {
+public class AutoCrossBackLeft extends CommandGroup {
 
-    public AutoVisionGear() {
+    public AutoCrossBackLeft() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -24,9 +24,14 @@ public class AutoVisionGear extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	//addSequential(new AutoDriveIR(.40), 10);
-    	//addSequential(new AutoDoNothing(), 2);
-    	//addSequential(new AutoRotate(0), 5);
-    	addSequential(new AutoCenterRobot(), 5);
+    	double SPEED = .4;
+    	addSequential(new PointWheels(0));
+		addSequential(new AutoDriveAngle(0, SPEED), 2);
+		addSequential(new PointWheels(270) , .5);
+		addSequential(new AutoDriveAngle(90, -SPEED), 2);
+		addSequential(new PointWheels(0) , .5);
+		addSequential(new AutoDriveAngle(0, SPEED), 4);
+		addSequential(new PointWheels(180) , .5);
+		addSequential(new AutoDriveAngle(0, -SPEED), 2);
     }
 }

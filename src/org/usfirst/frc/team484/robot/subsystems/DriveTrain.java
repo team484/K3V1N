@@ -25,10 +25,11 @@ public class DriveTrain extends Subsystem {
     
     public void driveWithJoystick() {
     	double ang = Robot.io.driveStick.getDirectionDegrees();
-    	if(ang + forwardAngle >= 360){
-    		ang = (ang + forwardAngle) - Math.floor((forwardAngle + ang) % 360.0) * 360;
-    	}
-    	Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees() + forwardAngle, Math.pow(Robot.io.driveStick.getMagnitude(),2) * Math.signum(Robot.io.driveStick.getMagnitude()), 0.5 * -Math.pow(Robot.io.driveStick.getTwist(), 3)/ Math.abs(Robot.io.driveStick.getTwist()));
+    	//if(ang + forwardAngle >= 360){
+    		//ang = (ang + forwardAngle) - (Math.floor((int)(forwardAngle + ang) % (int)360.0) * 360);
+    	//}else ang += forwardAngle;
+    	//System.out.println(ang);
+    	Robot.swerve.drive(ang + forwardAngle, Math.pow(Robot.io.driveStick.getMagnitude(),2) * Math.signum(Robot.io.driveStick.getMagnitude()), 0.5 * -Math.pow(Robot.io.driveStick.getTwist(), 3)/ Math.abs(Robot.io.driveStick.getTwist()));
     }
     public void doNothing(){
     	Robot.swerve.drive(0,0,0);
@@ -43,7 +44,7 @@ public class DriveTrain extends Subsystem {
     	return (Robot.io.topGyro.getAngle() - Robot.io.bottomGyro.getAngle()) / 2.0;
     }
     public void driveWithGyro() {
-    	 Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees() + (startAngle - getRobotAngle()), Robot.io.driveStick.getMagnitude(), -Math.pow(Robot.io.driveStick.getTwist(), 3) / Math.abs(Robot.io.driveStick.getTwist()));
+    	 Robot.swerve.drive(Robot.io.driveStick.getDirectionDegrees() + (startAngle - getRobotAngle()) + forwardAngle, Robot.io.driveStick.getMagnitude(), -Math.pow(Robot.io.driveStick.getTwist(), 3) / Math.abs(Robot.io.driveStick.getTwist()));
     }
     public void pointWheels(double angle) {
     	Robot.swerve.pointAllWheels(angle);
