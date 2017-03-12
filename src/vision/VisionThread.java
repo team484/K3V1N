@@ -81,8 +81,6 @@ public class VisionThread extends Thread {
 				visionResults = new VisionResults();
 				break;
 			}
-		} else {
-			visionResults = new VisionResults();
 		}
 	}
 	

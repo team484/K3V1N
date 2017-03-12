@@ -25,13 +25,13 @@ public class AutoCrossBackLeft extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	double SPEED = .4;
-    	addSequential(new PointWheels(0));
-		addSequential(new AutoDriveAngle(0, SPEED), 2);
+    	addSequential(new PointWheels(0), 1);
+		addSequential(new AutoDriveAngle(0, 0.4), 2);
 		addSequential(new PointWheels(270) , .5);
-		addSequential(new AutoDriveAngle(90, -SPEED), 2);
+		addSequential(new AutoDriveAngle(90, -0.4), 2);
 		addSequential(new PointWheels(0) , .5);
-		addSequential(new AutoDriveAngle(0, SPEED), 4);
+		addSequential(new AutoDriveAngle(0, 0.4), 4);
 		addSequential(new PointWheels(180) , .5);
-		addSequential(new AutoDriveAngle(0, -SPEED), 2);
+		addSequential(new AutoDriveAngle(0, -0.4), 2);
     }
 }

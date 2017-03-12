@@ -5,9 +5,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoRightPeg extends CommandGroup {
+public class AutoShootRight extends CommandGroup {
 
-    public AutoRightPeg() {
+    public AutoShootRight() {
+    	addParallel(new PIDShooter(),11.8);
+    	addSequential(new Agitate(),11.8);
+    	addSequential(new AutoDriveAngle(0, 0.5), 3.1);
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -24,12 +27,5 @@ public class AutoRightPeg extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new AutoDriveAngle(270, .65), 1.5);
-    	addSequential(new AutoRotate(-60), 1.5);
-    	addSequential(new ZeroGyro(), 0.2);
-		addSequential(new PointWheels(270), 0.3);
-		addSequential(new AutoDriveAngleVision(270, 0.35), 0.5);
-    	addSequential(new AutoDriveAngleVision(270, .31), 3.5); //90?
-    	addSequential(new AutoDriveAngle(90, 0.4), 0.2);
     }
 }

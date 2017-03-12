@@ -26,7 +26,7 @@ public class AutoCrossBackForward extends CommandGroup {
         // arm.
 		addSequential(new PointWheels(0) , .5);
 		addSequential(new AutoDriveAngle(0, .4), 4);
-		addSequential(new PointWheels(180) , .5);
+		addSequential(new PointWheels(180), .5);
 		addSequential(new AutoDriveAngle(0, -.4), 2);
     }
 }

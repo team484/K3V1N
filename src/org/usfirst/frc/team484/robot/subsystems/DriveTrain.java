@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class DriveTrain extends Subsystem {
-
+	public double rot = 0.0;
+	public double transX = 0.0;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 		
@@ -57,6 +58,10 @@ public class DriveTrain extends Subsystem {
     }
     public void setFrontAngle(double ang) {
     	forwardAngle = ang;
+    }
+    public void driveWithAssignedValues(double speed) {
+    	double angle = Math.toDegrees(Math.atan2(-speed,transX));
+    	driveWithValues(angle, Math.sqrt(speed * speed + transX * transX), -rot);
     }
     public double getFrontAngle() {
     	return forwardAngle;

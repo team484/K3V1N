@@ -12,6 +12,6 @@ public class AutoDriveForwardIntoGear extends CommandGroup {
     public AutoDriveForwardIntoGear() {
     	
 		addSequential(new PointWheels(270.0), 1);
-		addSequential(new AutoDriveAngle(270.0, .3));
+		addSequential(new AutoDriveAngle(270.0, 0.4), 3.1);
     }
 }

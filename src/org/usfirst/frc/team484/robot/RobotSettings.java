@@ -18,7 +18,7 @@ public class RobotSettings {
 	public static double rotateKI = 0.0001;
 	public static double rotateKD = 0.02;
 
-	public static double visionTransKP = 0.0001;
+	public static double visionTransKP = 0.04;
 	public static double visionTransKI = 0.0001;
 	public static double visionTransKD = 0.001;
 

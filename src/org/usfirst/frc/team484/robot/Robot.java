@@ -13,6 +13,8 @@ import org.usfirst.frc.team484.robot.commands.AutoDriveForwardIntoGear;
 import org.usfirst.frc.team484.robot.commands.AutoGearPlace;
 import org.usfirst.frc.team484.robot.commands.AutoLeftPeg;
 import org.usfirst.frc.team484.robot.commands.AutoRightPeg;
+import org.usfirst.frc.team484.robot.commands.AutoShootLeft;
+import org.usfirst.frc.team484.robot.commands.AutoShootRight;
 import org.usfirst.frc.team484.robot.subsystems.Agitator;
 import org.usfirst.frc.team484.robot.subsystems.BallPickup;
 import org.usfirst.frc.team484.robot.subsystems.BallShooter;
@@ -103,15 +105,18 @@ public class Robot extends IterativeRobot {
 		//io.bottomGyro.calibrate();
 
 		chooser.addDefault("DoNothing", new AutoDoNothing());
-		chooser.addObject("RightGearPeg", new AutoRightPeg());
-		chooser.addObject("LeftGearPeg", new AutoLeftPeg());
-		chooser.addObject("CenterGearPeg", new AutoGearPlace());
-		chooser.addObject("CrossBackRight", new AutoCrossBackRight());
-		chooser.addObject("CrossBackLeft", new AutoCrossBackLeft());
-		chooser.addObject("CrossBackForward", new AutoCrossBackForward());
-		chooser.addObject("DeadReckonGear", new AutoDriveForwardIntoGear());
-		chooser.addObject("timeDrve", new AutoDriveForTime());
-
+		//chooser.addObject("RightGearPeg", new AutoRightPeg());
+		//chooser.addObject("LeftGearPeg", new AutoLeftPeg());
+		//chooser.addObject("CenterGearPeg", new AutoGearPlace());
+		chooser.addObject("Shoot Right Side", new AutoShootRight());
+		chooser.addObject("Shoot Left Side", new AutoShootLeft());
+		chooser.addObject("Cross Line and back", new AutoCrossBackForward());
+		chooser.addObject("Gear center(No vision)", new AutoDriveForwardIntoGear());
+		//chooser.addObject("timeDrve", new AutoDriveForTime());
+		chooser.addObject("Left Gear BETA", new AutoLeftPeg());
+		chooser.addObject("Center Gear BETA", new AutoGearPlace());
+		chooser.addObject("Right Gear BETA", new AutoRightPeg());
+		
 		SmartDashboard.putData("Auto mode", chooser);
 
 		gearCamSettings = new CameraSettings(320, 240, 0, 0, 0, 0, 0, 0.00384);
@@ -206,6 +211,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		gearResults = gearVisionThread.getResults();
 		if (!RobotSettings.isBackupBot) {
 			((CANTalon) io.frontLeftRotationalMotor).enableBrakeMode(true);
 			((CANTalon) io.rearLeftRotationalMotor).enableBrakeMode(true);
@@ -239,6 +245,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		gearResults = gearVisionThread.getResults();
 		Scheduler.getInstance().run();
 	}
 
@@ -253,7 +260,9 @@ public class Robot extends IterativeRobot {
 			((CANTalon) io.rearLeftTransMotor).enableBrakeMode(true);
 			((CANTalon) io.frontRightTransMotor).enableBrakeMode(true);
 			((CANTalon) io.rearRightTransMotor).enableBrakeMode(true);
+			swerve.toggleVoltageCompensation(false, 12);
 		}
+		
 		SmartDashboard.putString("Robot Test", "Teleop-mode");
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
@@ -274,9 +283,8 @@ public class Robot extends IterativeRobot {
 		gearResults = gearVisionThread.getResults();
 		SmartDashboard.putNumber("gyro", driveTrain.getRobotAngle());
 		SmartDashboard.putNumber("voltage", io.pdp.getVoltage());
-		gearResults = gearVisionThread.getResults();
-		SmartDashboard.putNumber("X-Offset", gearResults.inchesX);
-		SmartDashboard.putNumber("Distance", gearResults.inchesZ);
+		//SmartDashboard.putNumber("X-Offset", gearResults.inchesX);
+		//SmartDashboard.putNumber("Distance", gearResults.inchesZ);
 	}
 
 	

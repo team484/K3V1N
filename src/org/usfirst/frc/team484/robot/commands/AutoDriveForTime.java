@@ -24,6 +24,7 @@ public class AutoDriveForTime extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new AutoDriveAngle(0.0, .4), 3);
+    	addSequential(new PointWheels(0), .5);
+    	addSequential(new AutoDriveAngle(0.0, .4), 4);
     }
 }

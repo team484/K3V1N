@@ -22,12 +22,8 @@ public class Climber extends Subsystem {
     	Robot.io.climbMotorA.set(0);
     	Robot.io.climbMotorB.set(0);
     }
-    public void climb() {
-    	Robot.io.climbMotorA.set(RobotSettings.climberSpeed);
-    	Robot.io.climbMotorB.set(RobotSettings.climberSpeed);
-    }
     public void climbJoysticks() {
-    	Robot.io.climbMotorA.set(Robot.io.operatorStick.getY());
+    	Robot.io.climbMotorA.set(-Robot.io.operatorStick.getY());
     	Robot.io.climbMotorB.set(-Robot.io.operatorStick.getY());
     }
 }

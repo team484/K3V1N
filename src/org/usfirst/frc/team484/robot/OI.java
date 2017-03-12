@@ -4,11 +4,13 @@ import org.usfirst.frc.team484.robot.commands.Agitate;
 import org.usfirst.frc.team484.robot.commands.AutoRotate;
 import org.usfirst.frc.team484.robot.commands.DriveWithGyro;
 import org.usfirst.frc.team484.robot.commands.JoystickClimb;
+import org.usfirst.frc.team484.robot.commands.JoystickDriveAngleVision;
 import org.usfirst.frc.team484.robot.commands.PIDShooter;
 import org.usfirst.frc.team484.robot.commands.PickupBalls;
 import org.usfirst.frc.team484.robot.commands.ResetWheels;
 import org.usfirst.frc.team484.robot.commands.ReversePickup;
 import org.usfirst.frc.team484.robot.commands.SetRobotFront;
+import org.usfirst.frc.team484.robot.commands.ZeroGyro;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -59,7 +61,7 @@ public class OI {
 	Button setRight = new JoystickButton(Robot.io.driveStick, 8);
 	Button setLeft = new JoystickButton(Robot.io.driveStick, 10);
 	Button setRear = new JoystickButton(Robot.io.driveStick, 9);
-
+	Button driveGear = new JoystickButton(Robot.io.driveStick,3);
 	public OI(){
 		resetWheels.whileHeld(new ResetWheels());
 		gyroDrive.whileHeld(new DriveWithGyro());
@@ -74,6 +76,8 @@ public class OI {
 		setRear.whenPressed(new SetRobotFront(SetRobotFront.Side.REAR));
 		setFront.whenPressed(new SetRobotFront(SetRobotFront.Side.FRONT));
 		setLeft.whenPressed(new SetRobotFront(SetRobotFront.Side.LEFT));
+		driveGear.whenPressed(new ZeroGyro());
+		driveGear.whileHeld(new JoystickDriveAngleVision(270, 0.4));
 	}
 	
 }
