@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
+// TODO: Creep mode -- Need multiplier
 public class DriveTrain extends Subsystem {
 	public double rot = 0.0;
 	public double transX = 0.0;
@@ -34,6 +35,9 @@ public class DriveTrain extends Subsystem {
     }
     public void doNothing(){
     	Robot.swerve.drive(0,0,0);
+    }
+    public void valuesDriveWithGyro(double rot, double speed, double angle) {
+    	Robot.swerve.drive(angle - getRobotAngle(), speed, rot);
     }
     public void driveWithValues(double deg, double mag, double rot){
     	Robot.swerve.drive(deg, mag, rot);

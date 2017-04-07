@@ -21,10 +21,12 @@ public class JoystickDriveAngleVision extends Command {
     public JoystickDriveAngleVision(double deg, double mag) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	Robot.io.topGyro.reset();
+    	Robot.io.bottomGyro.reset();
     	this.deg = deg;
     	this.mag = mag;
     	requires(Robot.driveTrain);
-    	transPID = new PIDController(0.05, 0, 0, new PIDSource() {
+    	transPID = new PIDController(0.04, 0, 0.015, new PIDSource() {
 			
 			@Override
 			public void setPIDSourceType(PIDSourceType pidSource) {}
@@ -32,7 +34,7 @@ public class JoystickDriveAngleVision extends Command {
 			@Override
 			public double pidGet() {
 				try {
-				if (Robot.gearResults.inchesX != null) {
+				if (Robot.gearResults != null) {
 				return Robot.gearResults.inchesX;
 				}
 				return 0;
@@ -90,7 +92,7 @@ public class JoystickDriveAngleVision extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.driveWithAssignedValues(Robot.io.driveStick.getY());
+    	Robot.driveTrain.driveWithAssignedValues(-Robot.io.driveStick.getY());
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -7,7 +7,7 @@ import vision.calculators.GearCalculator;
 import vision.calculators.ShooterCalculator;
 
 public class VisionThread extends Thread {
-	private static final int UPDATE_FREQUENCY = 67; //Update rate in ms
+	private static final int UPDATE_FREQUENCY = 20; //Update rate in ms
 	
 	private String networkTableName; //Name of table with vision data
 	private CameraSettings camSettings; //Camera Settings

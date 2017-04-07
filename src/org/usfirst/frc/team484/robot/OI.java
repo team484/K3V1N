@@ -76,7 +76,6 @@ public class OI {
 		setRear.whenPressed(new SetRobotFront(SetRobotFront.Side.REAR));
 		setFront.whenPressed(new SetRobotFront(SetRobotFront.Side.FRONT));
 		setLeft.whenPressed(new SetRobotFront(SetRobotFront.Side.LEFT));
-		driveGear.whenPressed(new ZeroGyro());
 		driveGear.whileHeld(new JoystickDriveAngleVision(270, 0.4));
 	}
 	

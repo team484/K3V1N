@@ -147,7 +147,8 @@ public class Robot extends IterativeRobot {
 					CvSink cvSink2 = CameraServer.getInstance().getVideo(camera2);
 					CvSource outputStream = CameraServer.getInstance().putVideo("Switcher", 320, 240);
 					Mat image = new Mat();
-
+					cvSink1.setEnabled(false);
+					cvSink2.setEnabled(false);
 					while (!Thread.interrupted()) {
 						if (Robot.io.driveStick.getRawButton(5)) {
 							allowCam1 = true;
@@ -181,6 +182,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledInit() {
+		SmartDashboard.putString("Robot Test", "Disabled");
 		if (!RobotSettings.isBackupBot) {
 			((CANTalon) io.frontLeftRotationalMotor).enableBrakeMode(false);
 			((CANTalon) io.rearLeftRotationalMotor).enableBrakeMode(false);
@@ -196,6 +198,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putString("Auto Selection: ", chooser.getSelected().getName());
+		SmartDashboard.putNumber("voltage", io.pdp.getVoltage());
+
 	}
 
 	/**
@@ -246,6 +251,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		gearResults = gearVisionThread.getResults();
+		SmartDashboard.putString("Robot Test", "Teleop-mode");
+		SmartDashboard.putNumber("voltage", io.pdp.getVoltage());
 		Scheduler.getInstance().run();
 	}
 
@@ -281,7 +288,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		gearResults = gearVisionThread.getResults();
-		SmartDashboard.putNumber("gyro", driveTrain.getRobotAngle());
 		SmartDashboard.putNumber("voltage", io.pdp.getVoltage());
 		//SmartDashboard.putNumber("X-Offset", gearResults.inchesX);
 		//SmartDashboard.putNumber("Distance", gearResults.inchesZ);
